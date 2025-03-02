@@ -1,0 +1,7 @@
+xopen("Purkinje19b972-1.nrn")	// Load the morphology file.
+forsec "axon" delete_section()	// Delete original axon and add a fake AIS
+
+objref axon, trunk_sections, branch_sections
+AIS axon = new SectionRef()
+trunk_sections = maindend
+branch_sections = spinydend

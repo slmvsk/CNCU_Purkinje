@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eu
+
+BASE_DIR="$(cd "$(dirname "$0")/.." > /dev/null 2>&1 && pwd)"
+cd "$BASE_DIR"
+
+die() {
+  >&2 echo "$1"
+  exit 1
+}
+
+REPO_DIR="tmp/repo"
+
+fetch() {
+  local src="$1"
+  local dst="$REPO_DIR/$2"
+  if [[ -d $dst ]]; then
+    cd "$dst"
+    git pull
+  else
+    mkdir -p "$REPO_DIR"
+    git clone "$src" "$dst"
+  fi
+}
+
+fetch "https://github.com/ModelDBRepository/266864" zang2021

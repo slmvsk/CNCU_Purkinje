@@ -1,0 +1,140 @@
+begintemplate SThcell
+
+public soma, treeA, treeB, nclist
+create soma, treeA[1], treeB[1]
+objectvar f, nclist
+
+proc init() { local i, me, child1, child2
+  nclist = new List()
+  create soma
+  soma {
+    nseg = 1
+    diam = 18.8
+    L = 18.8
+    Ra = 123.0
+    insert hh
+    gnabar_hh = 0.25
+    gl_hh = 0.0001666
+    el_hh = -60.0
+    insert CaT
+  }
+  
+  f = new File()
+  f.ropen("src/tutorial/treeA.dat")
+  ndendA = f.scanvar()
+  
+  create treeA[ndendA]
+  for i = 0, ndendA-1 {
+    me = f.scanvar() - 1
+	child1 = f.scanvar() - 1
+	child2 = f.scanvar() - 1
+	treeA[me] {
+      nseg = 1
+      diam = f.scanvar()
+      L = f.scanvar()
+      Ra = 123.0
+	  pt3dclear()
+	  pt3dadd(f.scanvar(), f.scanvar(), f.scanvar(), diam)
+	  pt3dadd(f.scanvar(), f.scanvar(), f.scanvar(), diam)
+      insert pas
+      g_pas = 0.0001667
+      e_pas = -60.0
+	  if (child1 >= 0) {
+        connect treeA[child1](0), 1
+	  }
+	  if (child2 >= 0) {
+        connect treeA[child2](0), 1
+	  }
+	}
+  }
+  f.close
+
+  f = new File()
+  f.ropen("src/tutorial/treeB.dat")
+  ndendB = f.scanvar()
+  
+  create treeB[ndendB]
+  for i = 0, ndendB-1 {
+    me = f.scanvar() - 1
+	child1 = f.scanvar() - 1
+	child2 = f.scanvar() - 1
+	treeB[me] {
+      nseg = 1
+      diam = f.scanvar()
+      L = f.scanvar()
+      Ra = 123.0
+	  pt3dclear()
+	  pt3dadd(f.scanvar(), f.scanvar(), f.scanvar(), diam)
+	  pt3dadd(f.scanvar(), f.scanvar(), f.scanvar(), diam)
+      insert pas
+      g_pas = 0.0001667
+      e_pas = -60.0
+	  if (child1 >= 0) {
+        connect treeB[child1](0), 1
+	  }
+	  if (child2 >= 0) {
+        connect treeB[child2](0), 1
+	  }
+	}
+  }
+  f.close
+
+  connect treeA[0](0), soma(1)
+  connect treeB[0](0), soma(1)
+}
+
+endtemplate SThcell
+
+
+nSThcells = 4
+objectvar SThcells[nSThcells]
+
+for i = 0, nSThcells-1 {
+  SThcells[i] = new SThcell()
+}
+
+access SThcells[0].soma
+
+objectvar stim
+SThcells[1].soma {
+	stim = new IClamp(0.5)
+	stim.del = 100
+	stim.dur = 100
+	stim.amp = 0.1
+}
+
+maxsyn = 10
+objectvar syn[maxsyn]
+
+SThcells[0].treeA[7] {
+  syn[0] = new ExpSyn(0)
+}
+
+SThcells[1].soma {
+  SThcells[0].nclist.append(new NetCon(&v(1), syn[0], -20, 1, 0.5))
+}
+
+tstop = 300
+
+
+objref rect, recv
+rect = new Vector()
+recv = new Vector()
+
+rect.record(&t)
+recv.record(&SThcells[0].soma.v(0.5))
+
+run()
+
+objref savdata
+savdata = new File()
+savdata.wopen("tmp/cell1somav.dat")
+savdata.printf("t SThcells[0].soma.v(0.5)\n")
+
+objref tempmatrix
+tempmatrix = new Matrix()
+tempmatrix.resize(recv.size(), 2)
+tempmatrix.setcol(0, rect)
+tempmatrix.setcol(1, recv)
+tempmatrix.fprint(0, savdata, " %g") // "0" suppresses printing nrow/ncol in the first line
+savdata.close()

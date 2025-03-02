@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -eu
+
+export TERM=xterm
+
+BASE_DIR="$(cd "$(dirname "$0")/.." > /dev/null 2>&1 && pwd)"
+cd "$BASE_DIR"
+
+die() {
+  >&2 echo "$1"
+  exit 1
+}
+
+console(){
+  ssh -t deigo zsh
+}
+
+console-intel() {
+  ssh -t deigo /opt/shared/deigo/slurm/bin/srun -p compute -C epyc --pty zsh
+}
+
+squeue() {
+  ssh -t deigo watch /opt/shared/deigo/slurm/bin/squeue
+}
+
+push() {
+  rsync -avz ./tmp/store/ deigo:~/prj/oist/r2/tmp/store/
+  rsync -avz ./tmp/output/ deigo:~/prj/oist/r2/tmp/output/
+}
+
+pull() {
+  rsync -avz deigo:~/prj/oist/r2/tmp/store/ ./tmp/store/
+  rsync -avz deigo:~/prj/oist/r2/tmp/output/ ./tmp/output/
+}
+
+command="${1:-}"
+[[ -z "$command" ]] && die "No command"
+shift
+
+"$command" "$@"

@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+set -eu
+
+BASE_DIR="$(cd "$(dirname "$0")/.." > /dev/null 2>&1 && pwd)"
+cd "$BASE_DIR"
+
+die() {
+  >&2 echo "$1"
+  exit 1
+}
+
+build_mods() {
+  rm -rf arm64
+  find "$1" -name "*.mod" | while read -r f; do
+    echo "$f"
+    nrnivmodl "$f"
+  done
+}
+
+update-mod() {
+  mod_dir="$1"
+  pushd "$mod_dir" > /dev/null
+  hash="$(git rev-parse HEAD)"
+  popd > /dev/null
+
+  arch="$(uname -m)"
+  path="tmp/mod/$arch/$hash"
+
+  if [[ -e "$arch" ]] && [[ "$(readlink "$arch")" == "$path" ]]; then
+    echo "Ready: $path"
+    return
+  fi
+
+  rm -rf "$arch"
+  if [[ ! -e "$path" ]]; then
+    nrnivmodl "$mod_dir"
+    mkdir -p "$(dirname "$path")"
+    mv "$arch" "$path"
+  fi
+  ln -sf "$path" "$arch"
+  echo "Link: $path"
+}
+
+run-hoc() {
+  echo running...
+  build_mods "$(dirname "$1")"
+  nrngui -nogui -nobanner "$1" -c "quit()"
+  echo ok
+}
+
+run() {
+  python "$@"
+  echo ok
+}
+
+command="${1:-}"
+[[ -z "$command" ]] && die "No command"
+shift
+
+case $command in
+  dev)
+    update-mod modeldb/zang2021/mod
+    watchexec -n --restart --watch src --exts hoc,py bin/start run "src/main.py"
+    ;;
+  zang2021)
+    cd "tmp/repo/zang2021"
+    rm -rf arm64
+    nrnivmodl mod
+    nrngui -nogui -nobanner "fig3.hoc" -c "quit()"
+    echo ok
+    ;;
+  gabi)
+    export PYTHONPATH
+    PYTHONPATH="${PYTHONPATH:-}:$(pwd)/src/gabi"
+    jupyter notebook --notebook-dir src/gabi
+    ;;
+  human)
+    export PYTHONPATH
+    PYTHONPATH="${PYTHONPATH:-}:$(pwd)/src/human"
+    jupyter notebook --notebook-dir src/human
+    ;;
+  macaque)
+    build_mods "src/macaque"
+    export PYTHONPATH
+    PYTHONPATH="${PYTHONPATH:-}:$(pwd)/src/macaque"
+    jupyter notebook --notebook-dir src/macaque
+    ;;
+  tutorial)
+    name="$1"
+    watchexec -n -w src --exts hoc,dat,mod bin/start run-hoc "src/tutorial/$name.hoc"
+    ;;
+  run)
+    run "$@"
+    ;;
+  repl)
+    export PYTHONPATH
+    PYTHONPATH="${PYTHONPATH:-}:$(pwd)/src"
+    python
+    ;;
+  *)
+    if [[ $(type -t $command) == function ]]; then
+      "$command" "$@"
+    else
+      die "Unknown command: $command"
+    fi
+    ;;
+esac
+

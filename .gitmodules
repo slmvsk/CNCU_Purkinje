@@ -1,0 +1,9 @@
+[submodule "modeldb/zang2021"]
+	path = modeldb/zang2021
+	url = git@github.com:kayhide/modeldb-zang2021
+[submodule "modeldb/zang2018"]
+	path = modeldb/zang2018
+	url = https://github.com/ModelDBRepository/243446
+[submodule "modeldb/khaliq2003"]
+	path = modeldb/khaliq2003
+	url = https://github.com/ModelDBRepository/48332

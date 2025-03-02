@@ -1,0 +1,8 @@
+src = "tmp/cell1somav.dat"
+dst = "tmp/cell1somav.png"
+
+set key autotitle columnhead
+set terminal png
+set output dst
+
+plot src using 1:2 with lines

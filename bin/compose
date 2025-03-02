@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+set -eu
+
+indent() {
+    while read -r line; do
+        echo "  $line"
+    done
+}
+
+verify-dir() {
+    dir="$1"
+
+    readarray -t xs < <(find "$dir" -maxdepth 1 -name "*$ext" | sort -V)
+    if ((${#xs[@]} == 0)); then
+        return 1
+    fi
+    if ((${#xs[@]} < 3)); then
+        echo "Only 1 or 2 $ext files: $dir"
+        return 1
+    fi
+
+    readarray -t ys < <(printf "%s\n" "${xs[@]}" | grep ".*[^\.0-9]$ext$")
+    if ((0 != ${#ys[@]})); then
+        echo "Non sequence $ext is detected:"
+        printf "%s\n" "${ys[@]}" | indent
+        return 2
+    fi
+
+    readarray -t zs < <(printf "%s\n" "${xs[@]}" | sed "s|[\.0-9]*$ext||" | uniq)
+    if ((1 != ${#zs[@]})); then
+        echo "Basename not consistent:"
+        printf "%s\n" "${zs[@]}" | indent
+        return 3
+    fi
+}
+
+gif() {
+    dir="$1"
+    dst="$(dirname "$dir")/$(basename "$dir").gif"
+    magick convert -delay 20 -loop 0 "$dir/*$ext" "$dst"
+    printf "\e[32m%12s\e[0m %s\n" create "$dst"
+}
+
+mp4() {
+    dir="$1"
+    tmp_dir="tmp/compose-mp4/${dir/#tmp\/output\//}"
+    mkdir -p "$tmp_dir"
+    echo "$tmp_dir"
+
+    find "$dir" -name "*$ext" | sort | while read -r f; do
+        t="$(basename "$f" "$ext")"
+        tmp_dst="$tmp_dir/$t$ext"
+        if [[ ! -f $tmp_dst ]]; then
+            magick "$f" -gravity NorthEast -pointsize 30 -fill indigo -annotate +10+10 "$t" "$tmp_dst"
+            printf "\e[32m%12s\e[0m %s\n" create "$tmp_dst"
+        fi
+    done
+
+    dst="$(dirname "$dir")/$(basename "$dir")-x0.1.mp4"
+    rm -rf "$dst"
+    ffmpeg -framerate 100 -pattern_type glob -i "$tmp_dir/*$ext" -r 60 -c:v libx264 -pix_fmt yuv420p "$dst"
+    printf "\e[32m%12s\e[0m %s\n" create "$dst"
+
+    tmp_dir2="$tmp_dir-250_300"
+    mkdir -p "$tmp_dir2"
+    find "$tmp_dir" -regex ".*\/2[5-9].\....\.png" -or -regex ".*\/300\.000\.png" | sort | while read -r f; do 
+        cp -f "$f" "$tmp_dir2/$(basename "$f")"
+    done
+    dst="$(dirname "$dir")/$(basename "$dir")-250_300-x0.03.mp4"
+    rm -rf "$dst"
+    ffmpeg -framerate 30 -pattern_type glob -i "$tmp_dir2/*$ext" -r 60 -c:v libx264 -pix_fmt yuv420p "$dst"
+    printf "\e[32m%12s\e[0m %s\n" create "$dst"
+}
+
+run() {
+    dir="$1"
+    if verify-dir "$dir"; then
+        echo "$dir"
+        "$target" "$dir"
+    fi
+}
+
+
+target="$1"
+dir="$2"
+ext="${3:-.png}"
+find "$dir" -type d | sort -V | while read -r d; do
+    run "$d"
+done
