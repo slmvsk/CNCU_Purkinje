@@ -126,7 +126,7 @@ class Config:
 
     def setup_general(self, sec):
         sec.insert("pas")
-        sec.insert("hpkj") # MODIFIED HERE, no file with this name 
+        sec.insert("hpkj") 
         sec.insert("ds")
         sec.insert("pk")
         sec.e_pas = self.default_eleak
