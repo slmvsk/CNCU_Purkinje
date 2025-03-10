@@ -1908,15 +1908,18 @@ class TrySet:
                 injections=[TrySet._injection_soma(i / 10) for i in range(-5, 15, 1)],
             )
         ]
-
+  
     
     
     _try_ca_recordings = [
         ("soma", 0.5, "cai"),        # Intracellular calcium
-        ("soma", 0.5, "ica"),        # Total calcium current
+        ("soma", 0.5, "ica"), # Total calcium current
+        ("axon", 0.5, "cai"),
         ("trunk_sections[1]", 0.0, "ica_newCaP"),  # P-type calcium current
         ("trunk_sections[1]", 0.0, "iCa_CaT3_1"),  # T-type calcium current
-        ("branches[100]", 0.0, "ica"),  # Calcium current in dendrites
+        ("branches[100]", 0.0, "ica"), # Calcium current in dendrites
+        ("branches[100]", 0.0, "ica_newCaP"),
+        ("branches[100]", 0.0, "iCa_CaT3_1"),
     ]
     
     
@@ -1925,8 +1928,8 @@ class TrySet:
             #recordings=[TrySet._try_ca_recordings],  # Wrap it in square brackets
             recordings=TrySet._try_ca_recordings  # Remove brackets
     )
-        #return [base(injections=[TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]])] # not correct using of lists 
-        return [base(injections=[inj for amp in [-0.2, 0.0, 0.2] for inj in TrySet._injection_soma(amp)])]
+        #return [base(injections=[TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]])] # not correct using of lists
+        return [base(injections=sum([TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]], []))]
     
 
     
