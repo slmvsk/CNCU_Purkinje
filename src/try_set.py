@@ -1912,20 +1912,21 @@ class TrySet:
     
     
     _try_ca_recordings = [
-        ("soma", 0.5, "cai"),         #  Center of the soma
-        ("axon", 0.5, "cai"),         #  Random point in the axon
-        ("trunk_sections[1]", 0.0, "cai"),  #  Beginning of the dendritic tree
-        ("branches[100]", 0.0, "cai"),   #  One of the major dendritic branches
-        #("branches[265]", 0.0, "cai"),  #  Another major dendritic branch
-        #("branches[415]", 0.0, "cai"),   #  Distant end of the dendrite
-        ]
+        ("soma", 0.5, "cai"),        # Intracellular calcium
+        ("soma", 0.5, "ica"),        # Total calcium current
+        ("trunk_sections[1]", 0.0, "ica_newCaP"),  # P-type calcium current
+        ("trunk_sections[1]", 0.0, "iCa_CaT3_1"),  # T-type calcium current
+        ("branches[100]", 0.0, "ica"),  # Calcium current in dendrites
+    ]
     
     
     def try_ca_recordings():
-        base = TrySet.human_original_nice.lift()(
-            recordings=[TrySet._try_ca_recordings],  # Wrap it in square brackets
+        base = TrySet.human_original_base_ca.lift()(
+            #recordings=[TrySet._try_ca_recordings],  # Wrap it in square brackets
+            recordings=TrySet._try_ca_recordings  # Remove brackets
     )
-        return [base(injections=[TrySet._injection_soma(amp) for amp in [-0.2, 0.0]])]
+        #return [base(injections=[TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]])] # not correct using of lists 
+        return [base(injections=[inj for amp in [-0.2, 0.0, 0.2] for inj in TrySet._injection_soma(amp)])]
     
     
     
@@ -1946,6 +1947,16 @@ TrySet.human_original_base = Spec(
     dt=0.01,
     tstop=300,
 )
+
+TrySet.human_original_base_ca = Spec(
+    morphology="human/original", 
+    adjust_soma=True,
+    dt=0.1,
+    tstop=2000, # Run for 2 sec
+)  
+
+
+
 
 TrySet.human_original_nice = TrySet.human_original_base(
     soma_gbar_naRsg=2.0,
