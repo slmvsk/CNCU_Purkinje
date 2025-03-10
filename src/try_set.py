@@ -1928,7 +1928,7 @@ class TrySet:
         #return [base(injections=[TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]])] # not correct using of lists 
         return [base(injections=[inj for amp in [-0.2, 0.0, 0.2] for inj in TrySet._injection_soma(amp)])]
     
-    # here 
+
     
 
 def to_key(s):
