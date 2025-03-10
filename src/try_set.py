@@ -1909,23 +1909,26 @@ class TrySet:
             )
         ]
 
-    def try_ca_recording():
-        #from runner import Recording
-        calcium_recordings = [
-            ("soma[0]", 0.5, "cai"),      # Center of the soma
-            ("axon[0]", 0.7, "cai"),      # Random point in the axon
-            ("dend_6[2]", 0.0, "cai"),    # Beginning of the dendritic tree
-            ("dend_6[1271]", 0.5, "cai"), # One of the major dendritic branches
-            ("dend_5[2657]", 0.5, "cai"), # Another main dendritic branch
-            ("dend_6[415]", 1.0, "cai"),  # Distant end of the dendrite
-        ]
-
+    
+    
+    _try_ca_recordings = [
+        ("soma[0]", 0.5, "cai"),      # Center of the soma
+        ("axon[0]", 0.5, "cai"),      # Random point in the axon
+        ("dend_6[2]", 0.0, "cai"),    # Beginning of the dendritic tree
+        ("dend_6[1271]", 0.0, "cai"), # One of the major dendritic branches
+        ("dend_5[2657]", 0.0, "cai"), # Another main dendritic branch
+        ("dend_6[415]", 1.0, "cai"),  # Distant end of the dendrite
+    ]
+    
+    
+    def try_ca_recordings():
         base = TrySet.human_original_nice.lift()(
-            recordings=calcium_recordings,  # 👈 Using new calcium recordings
+            recordings=[TrySet._try_ca_recordings],  # Wrap it in square brackets
     )
-
         return [base(injections=[TrySet._injection_soma(amp) for amp in [-0.2, 0.0]])]
-
+    
+    
+    
 
 def to_key(s):
     def f(x):

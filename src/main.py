@@ -467,7 +467,7 @@ if __name__ == "__main__":
         tries = sys.argv[1:]
     else:
         tries = TrySet.all[-1:]
-    tries = ["try_ca_recording"]
+    tries = ["try_ca_recordings"]
     # stats(TrySet.all)
     cs = None
     # cs = CosineSimilarity(next(TrySet.try04()).result)
