@@ -488,6 +488,7 @@ if __name__ == "__main__":
         #],
     #)
     recording_sites(Runner.expand(*TrySet.try_ca_recordings())[0]) # uncomment above for original one 
+    #recording_sites(Runner.expand(*TrySet.try_ca_recordings()))
     # recording_sites(Runner.expand(*TrySet.try17())[0])
     # recording_sites(Runner.expand(*TrySet.try57())[0])
     # recording_sites(Runner.expand(*TrySet.try61())[0])
