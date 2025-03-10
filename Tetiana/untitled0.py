@@ -26,6 +26,16 @@ for sec in h.allsec():
         print(sec.name(), "No cai")
 
 
+print("Recordings content:", TrySet._try_ca_recordings)
+for rec in TrySet._try_ca_recordings:
+    print(f"Length: {len(rec)} -> {rec}")
+
+
+
+
+
+
+
 print(h.soma)
 
 for i in range(int(h.soma.n3d())):
