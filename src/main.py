@@ -21,7 +21,7 @@ logger.verbose()
 
 OUTPUT_DIR = "tmp/output"
 
-PLOT_FINE_TIME = False
+PLOT_FINE_TIME = True
 PLOT_FINE_VALUE = False
 PLOT_PERIPHERAL = False
 PLOT_CURRENT = True
