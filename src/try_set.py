@@ -1923,8 +1923,6 @@ class TrySet:
     ]
     
     
-
-    
     def try_ca_recordings():
         base = TrySet.human_original_base_ca.lift()(
             #recordings=[TrySet._try_ca_recordings],  # Wrap it in square brackets
@@ -1933,13 +1931,13 @@ class TrySet:
         #return [base(injections=[TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]])] # not correct using of lists
         # Debug print for checking injections
         injections = sum([TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]], [])
-
+        print(f"Generated Injections: {injections}")
         # Explicitly filter out empty injections
         if not injections:
             return [base]  # No injections
         return [base(injections=injections)]  # Return with injections
 
-    
+
 
 def to_key(s):
     def f(x):
