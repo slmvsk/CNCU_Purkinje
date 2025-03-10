@@ -107,6 +107,7 @@ class Recording(Pointing):
     def is_current(self):
         return self.is_inward or self.is_outward
 
+
     def wrap(obj):
         if type(obj) is Recording:
             return obj
@@ -114,6 +115,9 @@ class Recording(Pointing):
             return Recording(**obj)
         else:
             return Recording(*obj)
+            
+        
+                
 
     def collect_in_out(recordings):
         res = {}
