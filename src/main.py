@@ -21,9 +21,9 @@ logger.verbose()
 
 OUTPUT_DIR = "tmp/output"
 
-PLOT_FINE_TIME = True
-PLOT_FINE_VALUE = True
-PLOT_PERIPHERAL = True
+PLOT_FINE_TIME = False
+PLOT_FINE_VALUE = False
+PLOT_PERIPHERAL = False
 PLOT_CURRENT = True
 PLOT_CURRENT_SUM = True
 PLOT_FREQ = True
@@ -467,7 +467,7 @@ if __name__ == "__main__":
         tries = sys.argv[1:]
     else:
         tries = TrySet.all[-1:]
-    tries = ["try61_1"]
+    tries = ["try_ca_recording"]
     # stats(TrySet.all)
     cs = None
     # cs = CosineSimilarity(next(TrySet.try04()).result)
