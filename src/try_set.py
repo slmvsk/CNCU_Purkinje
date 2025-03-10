@@ -1908,6 +1908,16 @@ class TrySet:
                 injections=[TrySet._injection_soma(i / 10) for i in range(-5, 15, 1)],
             )
         ]
+    def try_calcium_recordings():
+        from runner import Recording
+        return [
+            Recording("soma[0]", 0.5, "cai"),      # Center of the soma
+            Recording("axon[0]", 0.7, "cai"),      # Random point in the axon
+            Recording("dend_6[2]", 0.0, "cai"),    # Beginning of the dendritic tree
+            Recording("dend_6[1271]", 0.5, "cai"), # One of the major dendritic branches
+            Recording("dend_5[2657]", 0.5, "cai"), # Another main dendritic branch
+            Recording("dend_6[415]", 1.0, "cai"),  # Distant end of the dendrite
+        ]
 
 
 def to_key(s):
