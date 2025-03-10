@@ -19,12 +19,15 @@ from neuron import h
 print([m for m in dir(h) if not m.startswith("_")])  # Lists all available mechanisms
 
 
-
-
-
+for sec in h.allsec():
+    try:
+        print(sec.name(), sec.cai)
+    except AttributeError:
+        print(sec.name(), "No cai")
 
 
 print(h.soma)
+
 for i in range(int(h.soma.n3d())):
     print(f"Point {i}: x={h.soma.x3d(i)}, y={h.soma.y3d(i)}, z={h.soma.z3d(i)}, diam={h.soma.diam3d(i)}")
     
