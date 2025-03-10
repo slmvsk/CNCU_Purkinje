@@ -1912,13 +1912,13 @@ class TrySet:
     
     
     _try_ca_recordings = [
-        ("soma", 0.5, "cai"),      # Center of the soma
-        ("axon", 0.5, "cai"),      # Random point in the axon
-        ("dend_6[2]", 0.0, "cai"),    # Beginning of the dendritic tree
-        ("dend_6[1271]", 0.0, "cai"), # One of the major dendritic branches
-        ("dend_5[2657]", 0.0, "cai"), # Another main dendritic branch
-        ("dend_6[415]", 0.0, "cai"),  # Distant end of the dendrite
-    ]
+        ("soma", 0.5, "cai"),         #  Center of the soma
+        ("axon", 0.5, "cai"),         #  Random point in the axon
+        ("trunk_sections[1]", 0.0, "cai"),  #  Beginning of the dendritic tree
+        ("branches[100]", 0.0, "cai"),   #  One of the major dendritic branches
+        #("branches[265]", 0.0, "cai"),  #  Another major dendritic branch
+        #("branches[415]", 0.0, "cai"),   #  Distant end of the dendrite
+        ]
     
     
     def try_ca_recordings():
