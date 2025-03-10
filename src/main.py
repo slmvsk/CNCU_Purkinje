@@ -167,6 +167,36 @@ def plot_result(dir, runner, path_maker):
                         dir, label, recs_, runner, xlim, path_maker
                     )
 
+def plot_results_ca(dir, runner, path_maker):
+    spec = runner.spec
+    recs = [r for r in spec.recordings if r.value == "cai"]  # Only plot calcium traces
+    locs = {r.location for r in recs}
+    
+    for loc in locs:
+        irecs = [(i, r) for (i, r) in enumerate(recs) if loc == r.location]
+        ss = ScaleSplitter(irecs, f=lambda irec: runner.get_result_at(irec[0])[1])
+        
+        for i, irecs in enumerate(ss):
+            logger.info(f"ScaleSplitter: {i + 1}/{ss.count} -----------------------")
+            logger.info([r for _, r in irecs])
+            
+            for xlim in [(0, spec.tstop)]:  # Use full simulation time
+                post = f"t_{xlim[0]}_{xlim[1]}"
+                suffix = (1 < ss.count) and f"{i}" or None
+                dst = f"{dir}/{path_maker.make(spec, pre=loc.to_label(), post=post, suffix=suffix)}.png"
+                
+                plot_simple(
+                    [runner.get_result_at(i) for i, _ in irecs],
+                    dst,
+                    title=f"{loc.to_label()} Calcium Trace",
+                    note="Calcium Concentration [mM]",
+                    labels=[r.value for _, r in irecs],
+                    xlabel="Time [ms]",
+                    ylabel="Calcium Concentration [mM]",  # Label explicitly
+                    xlim=xlim,
+                )
+
+
 
 def plot_recs_sum_variations(dir, label, recs, r, xlim, path_maker):
     def sum2(ts, *xss):
@@ -449,14 +479,15 @@ if __name__ == "__main__":
     # analyze_morphology("macaque/Axon_withellipse", colorize=True)
     #capture(TrySet.human_original_base)
     #capture(TrySet.human_original_nice)
-    recording_sites(
-        "human/original",
-        adjust_soma=True,
-        recordings=[
-            ("soma", 0.5),
-            ("branches[100]", 0.0),
-        ],
-    )
+    #recording_sites(
+        #"human/original",
+        #adjust_soma=True,
+        #recordings=[
+            #("soma", 0.5),
+            #("branches[100]", 0.0),
+        #],
+    #)
+    recording_sites(Runner.expand(*TrySet.try_ca_recordings())[0]) # uncomment above for original one 
     # recording_sites(Runner.expand(*TrySet.try17())[0])
     # recording_sites(Runner.expand(*TrySet.try57())[0])
     # recording_sites(Runner.expand(*TrySet.try61())[0])
@@ -481,6 +512,7 @@ if __name__ == "__main__":
             spec = runner.spec
             plot_recording_variations(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner)
             plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
+            plot_results_ca(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # added by me 
             if EXPORT_RESULT:
                 export_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
             if PLOT_FREQ:
