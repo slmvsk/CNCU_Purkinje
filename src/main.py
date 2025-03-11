@@ -512,7 +512,7 @@ if __name__ == "__main__":
             runners.append(runner)
             spec = runner.spec
             plot_recording_variations(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner)
-            plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
+            #plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # uncomment
             plot_results_ca(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # added by me 
             if EXPORT_RESULT:
                 export_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
