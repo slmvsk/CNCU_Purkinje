@@ -72,6 +72,7 @@ class Pointing:
         if m:
             return getattr(cell, m[1])[int(m[2])]
         return getattr(cell, self.section)
+    
 
 
 Pointing.center = Pointing()
@@ -108,16 +109,29 @@ class Recording(Pointing):
         return self.is_inward or self.is_outward
 
 
+    #def wrap(obj):
+        #if type(obj) is Recording:
+            #return obj
+        #if type(obj) is dict:
+            #return Recording(**obj)
+        #else:
+            #return Recording(*obj)
+    
     def wrap(obj):
-        if type(obj) is Recording:
+        print(f"DEBUG: Recording.wrap received -> {obj} (Type: {type(obj)}, Length: {len(obj) if hasattr(obj, '__len__') else 'N/A'})")
+        print(f"DEBUG: Recording.wrap received -> {obj} (Type: {type(obj)})")
+        if isinstance(obj, Recording):  # ✅ Already a Recording object, return as-is
             return obj
-        if type(obj) is dict:
+        elif isinstance(obj, dict):  # ✅ Convert dict to Recording
             return Recording(**obj)
+        elif isinstance(obj, (tuple, list)):  # ✅ Convert tuple/list to Recording
+            if len(obj) == 3:
+                return Recording(*obj)
+            else:
+                raise TypeError(f"❌ Unexpected tuple/list format: {obj}, Length: {len(obj)}")
         else:
-            return Recording(*obj)
+            raise TypeError(f"❌ Unexpected input type for Recording: {type(obj)}, Value: {obj}")
             
-        
-                
 
     def collect_in_out(recordings):
         res = {}
@@ -201,6 +215,7 @@ class Spec:
     injections: list[Injection] = field(default_factory=list)
 
     def __post_init__(self):
+        print(f"DEBUG: __post_init__() received recordings -> {self.recordings}")  # Added this line
         if self.recordings is not None:
             object.__setattr__(
                 self, "recordings", [Recording.wrap(r) for r in self.recordings]
