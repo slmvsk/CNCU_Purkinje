@@ -1911,33 +1911,85 @@ class TrySet:
   
     
     
-    _try_ca_recordings = [
-        ("soma", 0.5, "cai"),        # Intracellular calcium
-        ("soma", 0.5, "ica"), # Total calcium current
-        ("axon", 0.5, "cai"),
-        ("trunk_sections[1]", 0.0, "ica_newCaP"),  # P-type calcium current
-        ("trunk_sections[1]", 0.0, "iCa_CaT3_1"),  # T-type calcium current
-        ("branches[100]", 0.0, "ica"), # Calcium current in dendrites
-        ("branches[100]", 0.0, "ica_newCaP"),
-        ("branches[100]", 0.0, "iCa_CaT3_1"),
+    #_try_ca_recordings = [
+        #("soma", 0.5, "cai"),  # Intracellular calcium
+        #("soma", 0.5, "ica"), # Total calcium current
+        #("axon", 0.5, "cai"),
+        #("trunk_sections[1]", 0.0, "ica_newCaP"),  # P-type calcium current
+        #("trunk_sections[1]", 0.0, "iCa_CaT3_1"),  # T-type calcium current
+        #("branches[100]", 0.0, "ica"), # Calcium current in dendrites
+        #("branches[100]", 0.0, "ica_newCaP"),
+        #("branches[100]", 0.0, "iCa_CaT3_1"),
+    #]
+    
+    
+    _try_ca_recordings_trial = [
+        # Calcium concentration
+        ("soma", 0.5, "cai"),        # Center of the soma 
+        ("axon[0]", 0.5, "cai"),     # Random point in the axon 
+        ("dend_6[2]", 0.5, "cai"),   # Beginning of the dendritic tree 
+        ("dend_6[840]", 0.5, "cai"), # Major dendritic branch 
+        ("dend_5[2657]", 0.5, "cai"), # Another main dendritic branch 
+        ("dend_6[415]", 0.5, "cai"),  # Distant end of the dendrite 
+
+        # Total calcium current at the same locations
+        ("soma", 0.5, "ica"),
+        ("axon[0]", 0.5, "ica"),
+        ("dend_6[2]", 0.5, "ica"),
+        ("dend_6[840]", 0.5, "ica"),
+        ("dend_5[2657]", 0.5, "ica"),
+        ("dend_6[415]", 0.5, "ica"),
+
+        # Specific calcium channel currents at dendritic locations
+        ("dend_6[840]", 0.5, "ica_newCaP"),  # P-type calcium current
+        ("dend_6[840]", 0.5, "iCa_CaT3_1"),  # T-type calcium current
+        ("dend_5[2657]", 0.5, "ica_newCaP"),
+        ("dend_5[2657]", 0.5, "iCa_CaT3_1"),
+        ("dend_6[415]", 0.5, "ica_newCaP"),
+        ("dend_6[415]", 0.5, "iCa_CaT3_1"),
     ]
     
     
-    def try_ca_recordings():
+    _try_ca_recordings = [
+        ("soma", 0.5, "  cai"),
+    ]
+    
+    def try_ca_recordings_mine():
+        print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
+        from runner import Recording
         base = TrySet.human_original_base_ca.lift()(
-            #recordings=[TrySet._try_ca_recordings],  # Wrap it in square brackets
-            recordings=[r for r in TrySet._try_ca_recordings]
-    )
-        #return [base(injections=[TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]])] # not correct using of lists
-        # Debug print for checking injections
-        injections = sum([TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]], [])
-        print(f"Generated Injections: {injections}")
-        # Explicitly filter out empty injections
-        if not injections:
-            return [base]  # No injections
-        return [base(injections=injections)]  # Return with injections
+            #recordings=TrySet._try_ca_recordings, # I removed [] around TrySet._try_ca_recordings
+            recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
+        )
+        print(f"DEBUG: Base recordings AFTER assignment -> {base.recordings}")
+        return [
+            base(
+                injections=[
+                    TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2, 0.4]
+                ]
+             )
+          ]
+    
+    
+    def try_ca_recordings():
+        from runner import Recording
+        # Ensure all elements in _try_ca_recordings are converted to Recording objects
+        parsed_recordings = [Recording(*r) for r in TrySet._try_ca_recordings]
 
+        # Debugging step to verify correct parsing
+        print(f"DEBUG: Parsed TrySet._try_ca_recordings -> {parsed_recordings}")
 
+        base = TrySet.human_original_base_ca.lift()(
+            recordings=parsed_recordings  #  Assign the properly formatted list
+            )
+    
+        return [
+            base(
+                injections=[
+                    inj for amp in [-0.2, 0.0, 0.2, 0.4] for inj in TrySet._injection_soma(amp)
+                ]
+            )
+        ]
 
 def to_key(s):
     def f(x):
@@ -1956,7 +2008,7 @@ TrySet.human_original_base = Spec(
     tstop=300,
 )
 
-TrySet.human_original_base_ca = Spec(
+TrySet.human_original_base_ca = Spec( # i added this 
     morphology="human/original", 
     adjust_soma=True,
     dt=0.1,
