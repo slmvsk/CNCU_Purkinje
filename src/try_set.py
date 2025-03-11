@@ -1951,15 +1951,15 @@ class TrySet:
     
     
     _try_ca_recordings = [
-        ("soma", 0.5, "  cai"),
+        ("soma", 0.5, "cai"),
     ]
     
-    def try_ca_recordings_mine():
+    def try_ca_recordings():
         print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
-        from runner import Recording
+        #from runner import Recording
         base = TrySet.human_original_base_ca.lift()(
-            #recordings=TrySet._try_ca_recordings, # I removed [] around TrySet._try_ca_recordings
-            recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
+            recordings=[TrySet._try_ca_recordings], # I removed [] around TrySet._try_ca_recordings
+            #recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
         )
         print(f"DEBUG: Base recordings AFTER assignment -> {base.recordings}")
         return [
@@ -1971,7 +1971,7 @@ class TrySet:
           ]
     
     
-    def try_ca_recordings():
+    def try_ca_recordings_trial():
         from runner import Recording
         # Ensure all elements in _try_ca_recordings are converted to Recording objects
         parsed_recordings = [Recording(*r) for r in TrySet._try_ca_recordings]
