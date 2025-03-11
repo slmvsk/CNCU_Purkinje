@@ -119,12 +119,11 @@ class Recording(Pointing):
     
     def wrap(obj):
         print(f"DEBUG: Recording.wrap received -> {obj} (Type: {type(obj)}, Length: {len(obj) if hasattr(obj, '__len__') else 'N/A'})")
-        print(f"DEBUG: Recording.wrap received -> {obj} (Type: {type(obj)})")
-        if isinstance(obj, Recording):  # ✅ Already a Recording object, return as-is
+        if isinstance(obj, Recording):  #  Already a Recording object, return as-is
             return obj
-        elif isinstance(obj, dict):  # ✅ Convert dict to Recording
+        elif isinstance(obj, dict):  # Convert dict to Recording
             return Recording(**obj)
-        elif isinstance(obj, (tuple, list)):  # ✅ Convert tuple/list to Recording
+        elif isinstance(obj, (tuple, list)):  # Convert tuple/list to Recording
             if len(obj) == 3:
                 return Recording(*obj)
             else:
@@ -431,8 +430,11 @@ class Runner:
         return self._result
 
     def get_result_at(self, *idxs):
-        ts, *xss = self.result
-        return (ts, *[xss[i] for i in idxs])
+        if self.result is None:
+            raise ValueError(" No simulation result found. Check for errors in NEURON execution.")
+            ts, *xss = self.result
+            return (ts, *[xss[i] for i in idxs])
+        
 
     def run_and_capture(self, writer, step=10):
         # remove `-nogui` for gui use, should be done before importing neuron module
