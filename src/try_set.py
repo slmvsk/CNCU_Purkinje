@@ -1947,10 +1947,11 @@ class TrySet:
         #("dend_5[2657]", 0.5, "iCa_CaT3_1"),
         #("dend_6[415]", 0.5, "ica_newCaP"),
         #("dend_6[415]", 0.5, "iCa_CaT3_1"),
-    #]
+    ]
     # record v for the same locations 
     # save as vector not generate plot 
     # selected points save 
+    # 1 plot where compared ca conc in all locations 
     
     _try_ca_recordings = [
         ("soma", 0.5, "cai"),
