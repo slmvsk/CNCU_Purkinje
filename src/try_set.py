@@ -1941,14 +1941,16 @@ class TrySet:
         ("dend_6[415]", 0.5, "ica"),
 
         # Specific calcium channel currents at dendritic locations
-        ("dend_6[840]", 0.5, "ica_newCaP"),  # P-type calcium current
-        ("dend_6[840]", 0.5, "iCa_CaT3_1"),  # T-type calcium current
-        ("dend_5[2657]", 0.5, "ica_newCaP"),
-        ("dend_5[2657]", 0.5, "iCa_CaT3_1"),
-        ("dend_6[415]", 0.5, "ica_newCaP"),
-        ("dend_6[415]", 0.5, "iCa_CaT3_1"),
-    ]
-    
+        #("dend_6[840]", 0.5, "ica_newCaP"),  # P-type calcium current
+        #("dend_6[840]", 0.5, "iCa_CaT3_1"),  # T-type calcium current
+        #("dend_5[2657]", 0.5, "ica_newCaP"),
+        #("dend_5[2657]", 0.5, "iCa_CaT3_1"),
+        #("dend_6[415]", 0.5, "ica_newCaP"),
+        #("dend_6[415]", 0.5, "iCa_CaT3_1"),
+    #]
+    # record v for the same locations 
+    # save as vector not generate plot 
+    # selected points save 
     
     _try_ca_recordings = [
         ("soma", 0.5, "cai"),
