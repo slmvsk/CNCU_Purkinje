@@ -127,9 +127,9 @@ class Recording(Pointing):
             if len(obj) == 3:
                 return Recording(*obj)
             else:
-                raise TypeError(f"❌ Unexpected tuple/list format: {obj}, Length: {len(obj)}")
+                raise TypeError(f" Unexpected tuple/list format: {obj}, Length: {len(obj)}")
         else:
-            raise TypeError(f"❌ Unexpected input type for Recording: {type(obj)}, Value: {obj}")
+            raise TypeError(f" Unexpected input type for Recording: {type(obj)}, Value: {obj}")
             
 
     def collect_in_out(recordings):
