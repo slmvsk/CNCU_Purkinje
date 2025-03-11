@@ -1970,27 +1970,6 @@ class TrySet:
              )
           ]
     
-    
-    def try_ca_recordings_trial():
-        from runner import Recording
-        # Ensure all elements in _try_ca_recordings are converted to Recording objects
-        parsed_recordings = [Recording(*r) for r in TrySet._try_ca_recordings]
-
-        # Debugging step to verify correct parsing
-        print(f"DEBUG: Parsed TrySet._try_ca_recordings -> {parsed_recordings}")
-
-        base = TrySet.human_original_base_ca.lift()(
-            recordings=parsed_recordings  #  Assign the properly formatted list
-            )
-    
-        return [
-            base(
-                injections=[
-                    inj for amp in [-0.2, 0.0, 0.2, 0.4] for inj in TrySet._injection_soma(amp)
-                ]
-            )
-        ]
-
 def to_key(s):
     def f(x):
         return int(x) if x.isdigit() else x
@@ -2011,8 +1990,8 @@ TrySet.human_original_base = Spec(
 TrySet.human_original_base_ca = Spec( # i added this 
     morphology="human/original", 
     adjust_soma=True,
-    dt=0.1,
-    tstop=2000, # Run for 2 sec
+    dt=0.01,
+    tstop=1000, # Run for 1 sec
 )  
 
 
