@@ -1910,18 +1910,7 @@ class TrySet:
         ]
   
     
-    
-    #_try_ca_recordings = [
-        #("soma", 0.5, "cai"),  # Intracellular calcium
-        #("soma", 0.5, "ica"), # Total calcium current
-        #("axon", 0.5, "cai"),
-        #("trunk_sections[1]", 0.0, "ica_newCaP"),  # P-type calcium current
-        #("trunk_sections[1]", 0.0, "iCa_CaT3_1"),  # T-type calcium current
-        #("branches[100]", 0.0, "ica"), # Calcium current in dendrites
-        #("branches[100]", 0.0, "ica_newCaP"),
-        #("branches[100]", 0.0, "iCa_CaT3_1"),
-    #]
-    
+
     
     _try_ca_recordings_trial = [
         # Calcium concentration
@@ -1955,6 +1944,8 @@ class TrySet:
     
     _try_ca_recordings = [
         ("soma", 0.5, "cai"),
+        ("soma", 0.5, "ica"),
+        #("soma", 0.5, "v")
     ]
     
     def try_ca_recordings():
@@ -1994,7 +1985,7 @@ TrySet.human_original_base_ca = Spec( # i added this
     morphology="human/original", 
     adjust_soma=True,
     dt=0.01,
-    tstop=100, # Run for 1 sec
+    tstop=500, # Run for 1 sec
 )  # run for less time + save vectors not plots, plots only important what caused what 
 
 
