@@ -11,7 +11,7 @@ from fourier import Fourier, CosineSimilarity
 import color
 import writer
 from cell import Cell
-from neuron import h
+#from neuron import h
 #print(dir(writer))  # List all attributes of the writer module
 
 os.environ["NEURON_MODULE_OPTIONS"] = "-nogui"
@@ -171,6 +171,8 @@ import pandas as pd
 import os
 
 def plot_results_ca(dir, runner, path_maker):
+    if runner.result is None:
+        raise RuntimeError("⚠️ NEURON simulation failed. Check model parameters, dt, v_init, and section definitions.")
     spec = runner.spec
     recs = [r for r in spec.recordings if r.value == "cai"]  # Only plot calcium traces
     locs = {r.location for r in recs}
