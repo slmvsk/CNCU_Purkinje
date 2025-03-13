@@ -1994,8 +1994,8 @@ TrySet.human_original_base_ca = Spec( # i added this
     morphology="human/original", 
     adjust_soma=True,
     dt=0.01,
-    tstop=1000, # Run for 1 sec
-)  
+    tstop=100, # Run for 1 sec
+)  # run for less time + save vectors not plots, plots only important what caused what 
 
 
 
