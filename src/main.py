@@ -167,26 +167,53 @@ def plot_result(dir, runner, path_maker):
                         dir, label, recs_, runner, xlim, path_maker
                     )
 
+import pandas as pd
+import os
+
 def plot_results_ca(dir, runner, path_maker):
     spec = runner.spec
     recs = [r for r in spec.recordings if r.value == "cai"]  # Only plot calcium traces
     locs = {r.location for r in recs}
-    
+
     for loc in locs:
         irecs = [(i, r) for (i, r) in enumerate(recs) if loc == r.location]
-        ss = ScaleSplitter(irecs, f=lambda irec: runner.get_result_at(irec[0])[1])
-        
+        ss = ScaleSplitter(irecs, f=lambda irec: runner.get_result_at(irec[0])[1] if runner.get_result_at(irec[0]) else None)
+
         for i, irecs in enumerate(ss):
             logger.info(f"ScaleSplitter: {i + 1}/{ss.count} -----------------------")
             logger.info([r for _, r in irecs])
-            
+
             for xlim in [(0, spec.tstop)]:  # Use full simulation time
                 post = f"t_{xlim[0]}_{xlim[1]}"
-                suffix = (1 < ss.count) and f"{i}" or None
+                suffix = f"{i}" if ss.count > 1 else None
                 dst = f"{dir}/{path_maker.make(spec, pre=loc.to_label(), post=post, suffix=suffix)}.png"
+
+                # Fetch results
+                results = [runner.get_result_at(i) for i, _ in irecs]
                 
+                # Handle missing data (NoneType issue)
+                if any(res is None for res in results):
+                    logger.warning(f"⚠️ Missing data for {loc.to_label()}. Saving CSV instead.")
+                    
+                    # Save results to CSV
+                    csv_dir = os.path.join(dir, "csv_results")
+                    os.makedirs(csv_dir, exist_ok=True)
+                    csv_path = os.path.join(csv_dir, f"{loc.to_label()}_{post}.csv")
+
+                    time_series = runner.get_result_at(0)[0] if runner.get_result_at(0) else []
+                    data_dict = {"Time [ms]": time_series}
+
+                    for idx, (_, rec) in enumerate(irecs):
+                        data_dict[f"{rec.value}"] = runner.get_result_at(idx)[1] if runner.get_result_at(idx) else []
+
+                    df = pd.DataFrame(data_dict)
+                    df.to_csv(csv_path, index=False)
+                    logger.info(f"Calcium results saved to {csv_path}")
+                    continue  # Skip plotting if missing data
+
+                # Proceed with plotting if results are available
                 plot_simple(
-                    [runner.get_result_at(i) for i, _ in irecs],
+                    results,
                     dst,
                     title=f"{loc.to_label()} Calcium Trace",
                     note="Calcium Concentration [mM]",
@@ -195,7 +222,6 @@ def plot_results_ca(dir, runner, path_maker):
                     ylabel="Calcium Concentration [mM]",  # Label explicitly
                     xlim=xlim,
                 )
-
 
 
 def plot_recs_sum_variations(dir, label, recs, r, xlim, path_maker):
