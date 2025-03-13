@@ -170,7 +170,7 @@ def plot_result(dir, runner, path_maker):
 import pandas as pd
 import os
 
-def plot_results_ca_ica(dir, runner, path_maker):
+def plot_results_ca(dir, runner, path_maker):
     if runner.result is None:
         raise RuntimeError("⚠️ NEURON simulation failed. Check model parameters, dt, v_init, and section definitions.")
     
