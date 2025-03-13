@@ -124,9 +124,10 @@ class Recording(Pointing):
             return obj
         elif isinstance(obj, dict):  # Convert dict to Recording
             return Recording(**obj)
-        elif isinstance(obj, (tuple, list)):  # Convert tuple/list to Recording
+        elif isinstance(obj, (tuple, list)):  
             if len(obj) == 3:
-                return Recording(*obj)
+                section, position, value = obj  # Explicit unpacking
+                return Recording(section=section, position=position, value=value)  # Explicit assignment
             else:
                 raise TypeError(f" Unexpected tuple/list format: {obj}, Length: {len(obj)}")
         else:
