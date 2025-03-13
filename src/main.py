@@ -170,61 +170,64 @@ def plot_result(dir, runner, path_maker):
 import pandas as pd
 import os
 
-def plot_results_ca(dir, runner, path_maker):
+def plot_results_ca_ica(dir, runner, path_maker):
     if runner.result is None:
         raise RuntimeError("⚠️ NEURON simulation failed. Check model parameters, dt, v_init, and section definitions.")
+    
     spec = runner.spec
-    recs = [r for r in spec.recordings if r.value == "cai"]  # Only plot calcium traces
-    locs = {r.location for r in recs}
+    data_types = ["cai", "ica"]  # Separating cai and ica
 
-    for loc in locs:
-        irecs = [(i, r) for (i, r) in enumerate(recs) if loc == r.location]
-        ss = ScaleSplitter(irecs, f=lambda irec: runner.get_result_at(irec[0])[1] if runner.get_result_at(irec[0]) else None)
+    for data_type in data_types:
+        recs = [r for r in spec.recordings if r.value == data_type]  
+        locs = {r.location for r in recs}
 
-        for i, irecs in enumerate(ss):
-            logger.info(f"ScaleSplitter: {i + 1}/{ss.count} -----------------------")
-            logger.info([r for _, r in irecs])
+        for loc in locs:
+            irecs = [(i, r) for (i, r) in enumerate(recs) if loc == r.location]
+            ss = ScaleSplitter(irecs, f=lambda irec: runner.get_result_at(irec[0])[1] if runner.get_result_at(irec[0]) else None)
 
-            for xlim in [(0, spec.tstop)]:  # Use full simulation time
-                post = f"t_{xlim[0]}_{xlim[1]}"
-                suffix = f"{i}" if ss.count > 1 else None
-                dst = f"{dir}/{path_maker.make(spec, pre=loc.to_label(), post=post, suffix=suffix)}.png"
+            for i, irecs in enumerate(ss):
+                logger.info(f"ScaleSplitter: {i + 1}/{ss.count} -----------------------")
+                logger.info([r for _, r in irecs])
 
-                # Fetch results
-                results = [runner.get_result_at(i) for i, _ in irecs]
-                
-                # Handle missing data (NoneType issue)
-                if any(res is None for res in results):
-                    logger.warning(f"⚠️ Missing data for {loc.to_label()}. Saving CSV instead.")
+                for xlim in [(0, spec.tstop)]:  # Use full simulation time
+                    post = f"t_{xlim[0]}_{xlim[1]}"
+                    suffix = f"{i}" if ss.count > 1 else None
+                    dst = f"{dir}/{path_maker.make(spec, pre=loc.to_label(), post=post, suffix=suffix)}_{data_type}.png"
+
+                    # Fetch results
+                    results = [runner.get_result_at(i) for i, _ in irecs]
                     
-                    # Save results to CSV
-                    csv_dir = os.path.join(dir, "csv_results")
-                    os.makedirs(csv_dir, exist_ok=True)
-                    csv_path = os.path.join(csv_dir, f"{loc.to_label()}_{post}.csv")
+                    # Handle missing data (NoneType issue)
+                    if any(res is None for res in results):
+                        logger.warning(f"⚠️ Missing data for {loc.to_label()} ({data_type}). Saving CSV instead.")
 
-                    time_series = runner.get_result_at(0)[0] if runner.get_result_at(0) else []
-                    data_dict = {"Time [ms]": time_series}
+                        # Save results to CSV
+                        csv_dir = os.path.join(dir, "csv_results")
+                        os.makedirs(csv_dir, exist_ok=True)
+                        csv_path = os.path.join(csv_dir, f"{loc.to_label()}_{post}_{data_type}.csv")
 
-                    for idx, (_, rec) in enumerate(irecs):
-                        data_dict[f"{rec.value}"] = runner.get_result_at(idx)[1] if runner.get_result_at(idx) else []
+                        time_series = runner.get_result_at(0)[0] if runner.get_result_at(0) else []
+                        data_dict = {"Time [ms]": time_series}
 
-                    df = pd.DataFrame(data_dict)
-                    df.to_csv(csv_path, index=False)
-                    logger.info(f"Calcium results saved to {csv_path}")
-                    continue  # Skip plotting if missing data
+                        for idx, (_, rec) in enumerate(irecs):
+                            data_dict[f"{rec.value}"] = runner.get_result_at(idx)[1] if runner.get_result_at(idx) else []
 
-                # Proceed with plotting if results are available
-                plot_simple(
-                    results,
-                    dst,
-                    title=f"{loc.to_label()} Calcium Trace",
-                    note="Calcium Concentration [mM]",
-                    labels=[r.value for _, r in irecs],
-                    xlabel="Time [ms]",
-                    ylabel="Calcium Concentration [mM]",  # Label explicitly
-                    xlim=xlim,
-                )
+                        df = pd.DataFrame(data_dict)
+                        df.to_csv(csv_path, index=False)
+                        logger.info(f"{data_type.upper()} results saved to {csv_path}")
+                        continue  # Skip plotting if missing data
 
+                    # Proceed with plotting if results are available
+                    plot_simple(
+                        results,
+                        dst,
+                        title=f"{loc.to_label()} {data_type.upper()} Trace",
+                        note=f"{data_type.upper()} Measurement",
+                        labels=[r.value for _, r in irecs],
+                        xlabel="Time [ms]",
+                        ylabel="Calcium Concentration [mM]" if data_type == "cai" else "Calcium Current [nA]",
+                        xlim=xlim,
+                    )
 
 def plot_recs_sum_variations(dir, label, recs, r, xlim, path_maker):
     def sum2(ts, *xss):
