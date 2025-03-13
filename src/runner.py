@@ -67,29 +67,12 @@ class Pointing:
     def seg(self, cell):
         return self.sec(cell)(self.position)
 
-    #def sec(self, cell):
-        #m = re.match(r"([\w\d_]+)\[(\d+)\]", self.section)
-        #if m:
-            #return getattr(cell, m[1])[int(m[2])]
-        #return getattr(cell, self.section)
-    
     def sec(self, cell):
-        """Retrieve the correct section from the NEURON model."""
-        
-        m = re.match(r"([a-zA-Z_]+)(\[\d+\])?", self.section)
-        if not m:
-            raise ValueError(f"Invalid section format: {self.section}")
-
-        section_name = m.group(1)  # Extract base name, e.g., "dend_6"
-        index_str = m.group(2)  # Extract index, e.g., "[2]" (or None)
-
-        sec_obj = getattr(cell, section_name)  # Get the section object
-
-        if index_str:
-            index = int(index_str.strip("[]"))  # Convert "[2]" -> 2
-            sec_obj = sec_obj[index]  # Access the indexed section
-
-        return sec_obj  # Return the section object
+        m = re.match(r"([\w\d_]+)\[(\d+)\]", self.section)
+        if m:
+            return getattr(cell, m[1])[int(m[2])]
+        return getattr(cell, self.section)
+    
     
 
 
