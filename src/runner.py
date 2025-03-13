@@ -425,16 +425,32 @@ class Runner:
         )
 
     @property
+    #def result(self):
+        #if self._result is None:
+            #self._result = read_store(self.store_key, "voltages")
+        #return self._result
     def result(self):
         if self._result is None:
-            self._result = read_store(self.store_key, "voltages")
+            print(f"DEBUG: No cached result found. Trying to read from store_key: {self.store_key}")
+        self._result = read_store(self.store_key, "voltages")
+        if self._result is None:
+            print("ERROR: read_store() returned None. No results found.")
         return self._result
 
+    #def get_result_at(self, *idxs):
+        #if self.result is None:
+            #raise ValueError(" No simulation result found. Check for errors in NEURON execution.")
+            #ts, *xss = self.result
+            #return (ts, *[xss[i] for i in idxs])
+    
     def get_result_at(self, *idxs):
         if self.result is None:
-            raise ValueError(" No simulation result found. Check for errors in NEURON execution.")
-            ts, *xss = self.result
-            return (ts, *[xss[i] for i in idxs])
+            raise ValueError("No simulation result found. Check for errors in NEURON execution.")
+
+        print(f" DEBUG: Simulation result found. Fetching indexes {idxs}")
+
+        ts, *xss = self.result  # Unpack results
+        return (ts, *[xss[i] for i in idxs])
         
 
     def run_and_capture(self, writer, step=10):
