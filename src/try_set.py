@@ -1923,7 +1923,7 @@ class TrySet:
     #]
     
     
-    _try_ca_recordings_trial = [
+    _try_ca_recordings = [
         # Calcium concentration
         ("soma", 0.5, "cai"),        # Center of the soma 
         ("axon[0]", 0.5, "cai"),     # Random point in the axon 
@@ -1953,7 +1953,7 @@ class TrySet:
     # selected points save 
     # 1 plot where compared ca conc in all locations 
     
-    _try_ca_recordings = [
+    _try_ca_recordings_trial = [
         ("soma", 0.5, "cai"),
     ]
     
