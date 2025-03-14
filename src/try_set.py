@@ -1945,7 +1945,7 @@ class TrySet:
     _try_ca_recordings = [
         ("soma", 0.5, "cai"),
         ("soma", 0.5, "ica"),
-        #("soma", 0.5, "v")
+        ("soma", 0.5, "v"),
     ]
     
     def try_ca_recordings():
@@ -1985,7 +1985,7 @@ TrySet.human_original_base_ca = Spec( # i added this
     morphology="human/original", 
     adjust_soma=True,
     dt=0.01,
-    tstop=500, # Run for 1 sec
+    tstop=300, # Run for 1 sec
 )  # run for less time + save vectors not plots, plots only important what caused what 
 
 
