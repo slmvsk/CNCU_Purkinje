@@ -1948,11 +1948,12 @@ class TrySet:
         ("soma", 0.5, "v"),
     ]
     
+    
     def try_ca_recordings():
         print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
         #from runner import Recording
         #base = TrySet.human_original_base_ca.lift()(
-        base = TrySet.zang2021_ca.lift()(
+        base = TrySet.human_original_nice.lift()(
             recordings=[TrySet._try_ca_recordings], # I removed [] around TrySet._try_ca_recordings
             #recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
         )
@@ -1989,13 +1990,12 @@ TrySet.human_original_base_ca = Spec( # i added this
     tstop=300, # Run for 1 sec
 )  # run for less time + save vectors not plots, plots only important what caused what 
 
-TrySet.zang2021_ca = Spec( # i added this 
+TrySet.zang2021_ca = Spec( 
     morphology="zang2021/fig3", 
     adjust_soma=True,
     dt=0.01,
-    tstop=150, # Run for 1 sec
-)  # run for less time + save vectors not plots, plots only important what caused what 
-
+    tstop=150, 
+)  
 
 
 
