@@ -598,7 +598,7 @@ if __name__ == "__main__":
             spec = runner.spec
             plot_recording_variations(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner)
             plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # uncomment
-            plot_ca(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # added by me 
+            #plot_ca(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # added by me 
             if EXPORT_RESULT:
                 export_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
             if PLOT_FREQ:

@@ -10,13 +10,22 @@ from neuron import h
 import matplotlib.pyplot as plt
 #from neuron import gui
 
-h.load_file("/Users/tetianasalamovska/Downloads/Akicodes/src/tmp/output/human/original/analysis/geom.hoc")
+h.load_file("/Users/tetianasalamovska/Downloads/Akicodes/data/human/original.hoc")
 
 for sec in h.allsec():
     print(sec.name())
 
 from neuron import h
 print([m for m in dir(h) if not m.startswith("_")])  # Lists all available mechanisms
+
+
+for sec in h.dend:
+    print(sec)
+
+
+for sec in h.dend:
+    print(sec.name()) 
+
 
 
 for sec in h.allsec():
@@ -31,9 +40,14 @@ for rec in TrySet._try_ca_recordings:
     print(f"Length: {len(rec)} -> {rec}")
 
 
+if hasattr(h, "dend"):
+    dend = getattr(h, "dend", None)
+    print(isinstance(dend, type(h.Section())))  # Should return True if dend is a section
 
 
-
+# Access the first dendrite (if it is a list-like HocObject)
+if hasattr(h, "dend"):
+    print(dend[0])  # Check if it behaves like an indexed list
 
 
 print(h.soma)

@@ -1915,7 +1915,7 @@ class TrySet:
     _try_ca_recordings = [
         # Calcium concentration
         ("soma", 0.5, "cai"),        # Center of the soma 
-        ("axon[0]", 0.5, "cai"),     # Random point in the axon 
+        ("axon", 0.5, "cai"),     # Random point in the axon 
         ("dend[0]", 0.5, "cai"),   # Beginning of the dendritic tree 
         ("dend[4]", 0.5, "cai"),  # Major dendritic branch 
         ("dend[1775]", 0.5, "cai"), # Middle of the second main branch
@@ -1923,7 +1923,7 @@ class TrySet:
 
         # Total calcium current at the same locations
         ("soma", 0.5, "ica"),
-        ("axon[0]", 0.5, "ica"),
+        ("axon", 0.5, "ica"),
         ("dend[0]", 0.5, "ica"),
         ("dend[4]", 0.5, "ica"),
         ("dend[1775]", 0.5, "ica"),
@@ -1931,7 +1931,7 @@ class TrySet:
         
         # Voltage 
         ("soma", 0.5, "v"),
-        ("axon[0]", 0.5, "v"),
+        ("axon", 0.5, "v"),
         ("dend[0]", 0.5, "v"),
         ("dend[4]", 0.5, "v"),
         ("dend[1775]", 0.5, "v"),
@@ -1958,14 +1958,14 @@ class TrySet:
     
     
     def try_ca_recordings():
-        print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
+        #print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
         #from runner import Recording
         #base = TrySet.human_original_base_ca.lift()(
         base = TrySet.human_original_nice.lift()(
             recordings=[TrySet._try_ca_recordings], # I removed [] around TrySet._try_ca_recordings
             #recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
         )
-        print(f"DEBUG: Base recordings AFTER assignment -> {base.recordings}")
+        #print(f"DEBUG: Base recordings AFTER assignment -> {base.recordings}")
         return [
             base(
                 injections=[

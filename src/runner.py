@@ -7,7 +7,7 @@ import operator
 from multiprocessing import Process
 import re
 from prelude import logger, with_store, read_store
-
+from neuron import h
 
 #def read_current_mod():
     #arch = os.uname().machine
@@ -64,14 +64,41 @@ class Pointing:
     def loc(self, cell):
         return self.seg(cell).point()[0:3]
 
+    #def seg(self, cell):
+        #return self.sec(cell)(self.position)
     def seg(self, cell):
-        return self.sec(cell)(self.position)
+        sec = self.sec(cell)
 
+        # Case 1: It's a Section – return the Segment at the given position
+        if hasattr(sec, 'psection') and callable(getattr(sec, '__call__', None)):
+            return sec(self.position)
+
+        #  Case 2: It's already a Segment
+        if hasattr(sec, 'v') and hasattr(sec, 'x'):
+            return sec
+
+        raise TypeError(f"❌ Unexpected section or segment: {self.section} → Got: {type(sec)}, Object: {sec}")
+
+    #def sec(self, cell):
+        #m = re.match(r"([\w\d_]+)\[(\d+)\]", self.section)
+        #if m:
+            #return getattr(cell, m[1])[int(m[2])]
+        #return getattr(cell, self.section)
+        
     def sec(self, cell):
         m = re.match(r"([\w\d_]+)\[(\d+)\]", self.section)
         if m:
-            return getattr(cell, m[1])[int(m[2])]
-        return getattr(cell, self.section)
+            name, idx = m[1], int(m[2])
+            sec_obj = getattr(cell, name, None) or getattr(h, name, None)
+
+            # Try direct indexing if possible
+            try:
+                return sec_obj[idx]
+            except (TypeError, AttributeError):
+                raise TypeError(f"Section {name} is not indexable or doesn't exist.")
+    
+        # Fallback to non-indexed section
+        return getattr(cell, self.section, None) or getattr(h, self.section)
     
     
 
@@ -119,7 +146,7 @@ class Recording(Pointing):
             #return Recording(*obj)
     
     def wrap(obj):
-        print(f"DEBUG: Recording.wrap received -> {obj} (Type: {type(obj)}, Length: {len(obj) if hasattr(obj, '__len__') else 'N/A'})")
+        #print(f"DEBUG: Recording.wrap received -> {obj} (Type: {type(obj)}, Length: {len(obj) if hasattr(obj, '__len__') else 'N/A'})")
         if isinstance(obj, Recording):  #  Already a Recording object, return as-is
             return obj
         elif isinstance(obj, dict):  # Convert dict to Recording
@@ -216,7 +243,7 @@ class Spec:
     injections: list[Injection] = field(default_factory=list)
 
     def __post_init__(self):
-        print(f"DEBUG: __post_init__() received recordings -> {self.recordings}")  # Added this line
+        #print(f"DEBUG: __post_init__() received recordings -> {self.recordings}")  # Added this line
         if self.recordings is not None:
             object.__setattr__(
                 self, "recordings", [Recording.wrap(r) for r in self.recordings]
