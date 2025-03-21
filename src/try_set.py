@@ -1912,22 +1912,30 @@ class TrySet:
     
 
     
-    _try_ca_recordings_trial = [
+    _try_ca_recordings = [
         # Calcium concentration
         ("soma", 0.5, "cai"),        # Center of the soma 
         ("axon[0]", 0.5, "cai"),     # Random point in the axon 
-        ("dend_6[2]", 0.5, "cai"),   # Beginning of the dendritic tree 
-        ("dend_6[840]", 0.5, "cai"), # Major dendritic branch 
-        ("dend_5[2657]", 0.5, "cai"), # Another main dendritic branch 
-        ("dend_6[415]", 0.5, "cai"),  # Distant end of the dendrite 
+        ("dend[0]", 0.5, "cai"),   # Beginning of the dendritic tree 
+        ("dend[4]", 0.5, "cai"),  # Major dendritic branch 
+        ("dend[1775]", 0.5, "cai"), # Middle of the second main branch
+        ("dend[45]", 0.5, "cai"),  # Distant end of the dendrite 
 
         # Total calcium current at the same locations
         ("soma", 0.5, "ica"),
         ("axon[0]", 0.5, "ica"),
-        ("dend_6[2]", 0.5, "ica"),
-        ("dend_6[840]", 0.5, "ica"),
-        ("dend_5[2657]", 0.5, "ica"),
-        ("dend_6[415]", 0.5, "ica"),
+        ("dend[0]", 0.5, "ica"),
+        ("dend[4]", 0.5, "ica"),
+        ("dend[1775]", 0.5, "ica"),
+        ("dend[45]", 0.5, "ica"),
+        
+        # Voltage 
+        ("soma", 0.5, "v"),
+        ("axon[0]", 0.5, "v"),
+        ("dend[0]", 0.5, "v"),
+        ("dend[4]", 0.5, "v"),
+        ("dend[1775]", 0.5, "v"),
+        ("dend[45]", 0.5, "v"),
 
         # Specific calcium channel currents at dendritic locations
         #("dend_6[840]", 0.5, "ica_newCaP"),  # P-type calcium current
@@ -1942,7 +1950,7 @@ class TrySet:
     # selected points save 
     # 1 plot where compared ca conc in all locations 
     
-    _try_ca_recordings = [
+    _try_ca_recordings_trial = [
         ("soma", 0.5, "cai"),
         ("soma", 0.5, "ica"),
         ("soma", 0.5, "v"),
