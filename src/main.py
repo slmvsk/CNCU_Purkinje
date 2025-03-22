@@ -20,14 +20,14 @@ logger.verbose()
 
 OUTPUT_DIR = "tmp/output"
 
-PLOT_FINE_TIME = False
+PLOT_FINE_TIME = True
 PLOT_FINE_VALUE = False
 PLOT_PERIPHERAL = False
 PLOT_CURRENT = True
 PLOT_CURRENT_SUM = True
 PLOT_FREQ = False
 EXPORT_RESULT = True
-EXPORT_GEOM = True #was True
+EXPORT_GEOM = False #was True
 
 
 def analyze_morphology(
@@ -503,35 +503,34 @@ def stats(tries):
     print(f"  Simulations: {len(specs)}")
 
 
-def plot_ca(result_dict, locations, tstop):
-    import matplotlib.pyplot as plt
+def plot_ca(dir, runner, path_maker):
+    spec = runner.spec
+    # Filter only recordings of calcium concentration or current
+    recs = [r for r in spec.recordings if r.value in {"cai", "ica"}]
+    locs = {r.location for r in recs}
 
-    for loc in locations:
-        section, pos = loc
-        time = result_dict['t']
+    for loc in locs:
+        irecs = [(i, r) for (i, r) in enumerate(recs) if loc == r.location]
+        ss = ScaleSplitter(irecs, f=lambda irec: runner.get_result_at(irec[0])[1])
         
-        v_key = f"{section}({pos}).v"
-        ica_key = f"{section}({pos}).ica"
-        cai_key = f"{section}({pos}).cai"
+        for i, irecs in enumerate(ss):
+            logger.info(f"[CA] ScaleSplitter: {i + 1}/{ss.count} -----------------------")
+            logger.info([r for _, r in irecs])
 
-        plt.figure(figsize=(12, 6))
-        
-        if v_key in result_dict:
-            plt.plot(time, result_dict[v_key], label='Voltage [mV]', color='blue')
-        if ica_key in result_dict:
-            plt.plot(time, result_dict[ica_key], label='ICa [mA/cm²]', color='orange')
-        if cai_key in result_dict:
-            plt.plot(time, result_dict[cai_key], label='[Ca²⁺]_i [mM]', color='green')
-
-        plt.title(f"{section}({pos}) - Voltage, ICa, and Calcium")
-        plt.xlabel("Time [ms]")
-        plt.ylabel("Signal")
-        plt.xlim(0, tstop)
-        plt.legend()
-        plt.grid(True)
-        plt.tight_layout()
-        plt.show()
-
+            for xlim in xlims(spec):
+                post = f"t_{xlim[0]}_{xlim[1]}"
+                suffix = f"{i}" if ss.count > 1 else None
+                dst = f"{dir}/{path_maker.make(spec, pre=loc.to_label(), post=post, suffix=suffix)}.ca.png"
+                
+                plot_simple(
+                    [runner.get_result_at(i) for i, _ in irecs],
+                    dst,
+                    title=f"{loc.to_label()}: Ca — " + ", ".join(x.to_label() for x in spec.injections),
+                    note=spec.pp("soma", "axon", "dend"),
+                    labels=[r.value for _, r in irecs],
+                    xlabel="t [ms]",
+                    xlim=xlim,
+                )
 
 
 
@@ -576,7 +575,7 @@ if __name__ == "__main__":
             spec = runner.spec
             plot_recording_variations(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner)
             plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # uncomment
-            plot_ca(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # added by me 
+            #plot_ca(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # added by me, fix 
             if EXPORT_RESULT:
                 export_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
             if PLOT_FREQ:
