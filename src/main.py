@@ -13,7 +13,6 @@ import writer
 from cell import Cell
 #from neuron import h
 #print(dir(writer))  # List all attributes of the writer module
-
 os.environ["NEURON_MODULE_OPTIONS"] = "-nogui"
 
 logger.verbose()

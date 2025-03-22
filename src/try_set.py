@@ -1916,26 +1916,26 @@ class TrySet:
         # Calcium concentration
         ("soma", 0.5, "cai"),        # Center of the soma 
         ("axon", 0.5, "cai"),     # Random point in the axon 
-        ("dend[0]", 0.5, "cai"),   # Beginning of the dendritic tree 
-        ("dend[4]", 0.5, "cai"),  # Major dendritic branch 
-        ("dend[1775]", 0.5, "cai"), # Middle of the second main branch
-        ("dend[45]", 0.5, "cai"),  # Distant end of the dendrite 
+        ("trunk_sections[0]", 0.5, "cai"),   # Beginning of the dendritic tree - dend_5[0]
+        ("trunk_sections[240]", 0.5, "cai"),  # Major dendritic branch - dend[4]
+        ("branch_sections[2185]", 0.5, "cai"), # Middle of the second main branch - dend[1775]
+        ("branch_sections[4722]", 0.5, "cai"),  # Distant end of the dendrite -- dend[45]
 
         # Total calcium current at the same locations
         ("soma", 0.5, "ica"),
         ("axon", 0.5, "ica"),
-        ("dend[0]", 0.5, "ica"),
-        ("dend[4]", 0.5, "ica"),
-        ("dend[1775]", 0.5, "ica"),
-        ("dend[45]", 0.5, "ica"),
+        ("trunk_sections[0]", 0.5, "ica"),
+        ("trunk_sections[240]", 0.5, "ica"),
+        ("branch_sections[2185]", 0.5, "ica"),
+        ("branch_sections[4722]", 0.5, "ica"),
         
         # Voltage 
         ("soma", 0.5, "v"),
         ("axon", 0.5, "v"),
-        ("dend[0]", 0.5, "v"),
-        ("dend[4]", 0.5, "v"),
-        ("dend[1775]", 0.5, "v"),
-        ("dend[45]", 0.5, "v"),
+        ("trunk_sections[0]", 0.5, "v"),
+        ("trunk_sections[240]", 0.5, "v"),
+        ("branch_sections[2185]", 0.5, "v"),
+        ("branch_sections[4722]", 0.5, "v"),
 
         # Specific calcium channel currents at dendritic locations
         #("dend_6[840]", 0.5, "ica_newCaP"),  # P-type calcium current

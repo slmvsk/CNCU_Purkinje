@@ -9,8 +9,90 @@ Created on Thu Jan 30 17:20:12 2025
 from neuron import h
 import matplotlib.pyplot as plt
 #from neuron import gui
+from cell import Cell
 
-h.load_file("/Users/tetianasalamovska/Downloads/Akicodes/data/human/original.hoc")
+cell = Cell.load("/Users/tetianasalamovska/Downloads/Akicodes/data/human/original.hoc", gui=False)   
+
+
+
+
+
+
+from neuron import h
+import pandas as pd
+from cell import Cell
+
+# Load and classify the cell
+cell = Cell.load("../data/human/original.hoc")
+cell.classify()
+
+# Gather all dendritic sections
+all_dends = []
+for group in ["dend", "dend_5", "dend_6"]:
+    sec_list = getattr(h, group, None)
+    if sec_list:
+        for i in range(len(sec_list)):
+            sec = sec_list[i]
+            all_dends.append({
+                "group": group,
+                "index": i,
+                "name": sec.name(),
+                "sec": sec
+            })
+
+# Helper to find match
+def find_match(sec):
+    for d in all_dends:
+        if d["name"] == sec.name():
+            return d
+    return None
+
+# Create tables
+trunk_table = []
+for i, sec in enumerate(cell.trunk_sections):
+    m = find_match(sec)
+    if m:
+        trunk_table.append({
+            "type": "trunk",
+            "index": i,
+            "group": m["group"],
+            "dend_index": m["index"],
+            "sec_name": m["name"]
+        })
+
+branch_table = []
+for i, sec in enumerate(cell.branch_sections):
+    m = find_match(sec)
+    if m:
+        branch_table.append({
+            "type": "branch",
+            "index": i,
+            "group": m["group"],
+            "dend_index": m["index"],
+            "sec_name": m["name"]
+        })
+
+# Combine and view
+df = pd.DataFrame(trunk_table + branch_table)
+print(df.to_string(index=False))  # or save as CSV: df.to_csv("sections_mapping.csv", index=False)
+
+
+
+
+
+
+
+
+
+
+print("=== Trunk Sections ===")
+for sec in cell.trunk_sections:
+    print(sec.name())
+
+print("\n=== Branch Sections ===")
+for sec in cell.branch_sections:
+    print(sec.name())
+
 
 for sec in h.allsec():
     print(sec.name())
