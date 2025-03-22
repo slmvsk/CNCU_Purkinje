@@ -1915,35 +1915,45 @@ class TrySet:
     _try_ca_recordings = [
         # Calcium concentration
         ("soma", 0.5, "cai"),        # Center of the soma 
-        ("axon", 0.5, "cai"),     # Random point in the axon 
-        ("trunk_sections[0]", 0.5, "cai"),   # Beginning of the dendritic tree - dend_5[0]
-        ("trunk_sections[240]", 0.5, "cai"),  # Major dendritic branch - dend[4]
-        ("branch_sections[2185]", 0.5, "cai"), # Middle of the second main branch - dend[1775]
-        ("branch_sections[4722]", 0.5, "cai"),  # Distant end of the dendrite -- dend[45]
+        ("axon", 0.0, "cai"),     # Random point in the axon 
+        ("trunk_sections[0]", 0.0, "cai"),   # Beginning of the dendritic tree - dend_5[0]
+        ("trunk_sections[240]", 0.0, "cai"),  # Major dendritic branch - dend[4]
+        ("branch_sections[2185]", 0.0, "cai"), # Middle of the second main branch - dend[1775]
+        ("branch_sections[4722]", 0.0, "cai"),  # Distant end of the dendrite -- dend[45]
 
         # Total calcium current at the same locations
         ("soma", 0.5, "ica"),
-        ("axon", 0.5, "ica"),
-        ("trunk_sections[0]", 0.5, "ica"),
-        ("trunk_sections[240]", 0.5, "ica"),
-        ("branch_sections[2185]", 0.5, "ica"),
-        ("branch_sections[4722]", 0.5, "ica"),
+        ("axon", 0.0, "ica"),
+        ("trunk_sections[0]", 0.0, "ica"),
+        ("trunk_sections[240]", 0.0, "ica"),
+        ("branch_sections[2185]", 0.0, "ica"),
+        ("branch_sections[4722]", 0.0, "ica"),
         
         # Voltage 
         ("soma", 0.5, "v"),
-        ("axon", 0.5, "v"),
-        ("trunk_sections[0]", 0.5, "v"),
-        ("trunk_sections[240]", 0.5, "v"),
-        ("branch_sections[2185]", 0.5, "v"),
-        ("branch_sections[4722]", 0.5, "v"),
+        ("axon", 0.0, "v"),
+        ("trunk_sections[0]", 0.0, "v"),
+        ("trunk_sections[240]", 0.0, "v"),
+        ("branch_sections[2185]", 0.0, "v"),
+        ("branch_sections[4722]", 0.0, "v"),
 
         # Specific calcium channel currents at dendritic locations
-        #("dend_6[840]", 0.5, "ica_newCaP"),  # P-type calcium current
-        #("dend_6[840]", 0.5, "iCa_CaT3_1"),  # T-type calcium current
-        #("dend_5[2657]", 0.5, "ica_newCaP"),
-        #("dend_5[2657]", 0.5, "iCa_CaT3_1"),
-        #("dend_6[415]", 0.5, "ica_newCaP"),
-        #("dend_6[415]", 0.5, "iCa_CaT3_1"),
+        ("soma", 0.5, "ik_mslo"),
+        ("soma", 0.5, "ik_SK2"),
+        ("soma", 0.5, "ica_newCaP"),
+        ("soma", 0.5, "iCa_CaT3_1"),
+        #("axon", 0.0, "ik_mslo"),
+        #("axon", 0.0, "ik_SK2"),
+        #("axon", 0.0, "ica_newCaP"),
+        #("axon", 0.0, "iCa_CaT3_1"),
+        ("trunk_sections[240]", 0.0, "ik_mslo"),
+        ("trunk_sections[240]", 0.0, "ik_SK2"),
+        ("trunk_sections[240]", 0.0, "ica_newCaP"),
+        ("trunk_sections[240]", 0.0, "iCa_CaT3_1"),
+        ("branch_sections[2185]", 0.0, "ik_mslo"),
+        ("branch_sections[2185]", 0.0, "ik_SK2"),
+        ("branch_sections[2185]", 0.0, "ica_newCaP"),
+        ("branch_sections[2185]", 0.0, "iCa_CaT3_1"),
     ]
     # record v for the same locations 
     # save as vector not generate plot 
@@ -1969,7 +1979,7 @@ class TrySet:
         return [
             base(
                 injections=[
-                    TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2, 0.4]
+                    TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]
                 ]
              )
           ]
@@ -1988,7 +1998,7 @@ TrySet.human_original_base = Spec(
     morphology="human/original",
     adjust_soma=True,
     dt=0.01,
-    tstop=300,
+    tstop=400, # CHANGE TO 300 
 )
 
 TrySet.human_original_base_ca = Spec( # i added this 
