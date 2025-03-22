@@ -503,55 +503,34 @@ def stats(tries):
     print(f"  Simulations: {len(specs)}")
 
 
-def plot_ca(dir, runner, path_maker):
-    if runner.result is None:
-        raise RuntimeError("⚠️ NEURON simulation failed. Check model parameters.")
-    
-    spec = runner.spec
-    recs_by_type = {"cai": [], "ica": [], "v": []}
-    
-    for r in spec.recordings:
-        if r.value in recs_by_type:
-            recs_by_type[r.value].append(r)
-    
-    for var, recs in recs_by_type.items():
-        locs = {r.location for r in recs}
-        for loc in locs:
-            irecs = [(i, r) for i, r in enumerate(recs) if loc == r.location]
-            ss = ScaleSplitter(irecs, f=lambda irec: runner.get_result_at(irec[0])[1])
-            for i, irecs in enumerate(ss):
-                post = "t_full"
-                suffix = f"{i}" if ss.count > 1 else None
-                dst = f"{dir}/{path_maker.make(spec, pre=loc.to_label(), post=post, suffix=suffix)}_{var}.png"
-                
-                results = [runner.get_result_at(i) for i, _ in irecs]
-                
-                if any(res is None for res in results):
-                    csv_dir = os.path.join(dir, "csv_results")
-                    os.makedirs(csv_dir, exist_ok=True)
-                    csv_path = os.path.join(csv_dir, f"{loc.to_label()}_{post}_{var}.csv")
-                    time_series = runner.get_result_at(0)[0] if runner.get_result_at(0) else []
-                    data_dict = {"Time [ms]": time_series}
-                    for idx, (_, rec) in enumerate(irecs):
-                        data_dict[f"{rec.value}"] = runner.get_result_at(idx)[1] if runner.get_result_at(idx) else []
-                    df = pd.DataFrame(data_dict)
-                    df.to_csv(csv_path, index=False)
-                    logger.info(f"Results saved to {csv_path}")
-                    continue  
-                
-                ylabel = "Calcium Concentration [mM]" if var == "cai" else "Calcium Current [nA]" if var == "ica" else "Voltage [mV]"
-                
-                plot_simple(
-                    results,
-                    dst,
-                    title=f"{loc.to_label()} {var.upper()} Trace",
-                    note=ylabel,
-                    labels=[r.value for _, r in irecs],
-                    xlabel="Time [ms]",
-                    ylabel=ylabel,
-                    xlim=(0, spec.tstop),
-                )
+def plot_ca(result_dict, locations, tstop):
+    import matplotlib.pyplot as plt
 
+    for loc in locations:
+        section, pos = loc
+        time = result_dict['t']
+        
+        v_key = f"{section}({pos}).v"
+        ica_key = f"{section}({pos}).ica"
+        cai_key = f"{section}({pos}).cai"
+
+        plt.figure(figsize=(12, 6))
+        
+        if v_key in result_dict:
+            plt.plot(time, result_dict[v_key], label='Voltage [mV]', color='blue')
+        if ica_key in result_dict:
+            plt.plot(time, result_dict[ica_key], label='ICa [mA/cm²]', color='orange')
+        if cai_key in result_dict:
+            plt.plot(time, result_dict[cai_key], label='[Ca²⁺]_i [mM]', color='green')
+
+        plt.title(f"{section}({pos}) - Voltage, ICa, and Calcium")
+        plt.xlabel("Time [ms]")
+        plt.ylabel("Signal")
+        plt.xlim(0, tstop)
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
+        plt.show()
 
 
 
@@ -597,7 +576,7 @@ if __name__ == "__main__":
             spec = runner.spec
             plot_recording_variations(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner)
             plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # uncomment
-            #plot_ca(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # added by me 
+            plot_ca(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # added by me 
             if EXPORT_RESULT:
                 export_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
             if PLOT_FREQ:
