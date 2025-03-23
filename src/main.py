@@ -441,10 +441,8 @@ def stats(tries):
     print("Total")
     print(f"  Simulations: {len(specs)}")
 
-
 import matplotlib.pyplot as plt
 from collections import defaultdict
-import os
 
 def plot_ca(runner, variables=None):
     """
@@ -479,6 +477,10 @@ def plot_ca(runner, variables=None):
         plt.legend()
         plt.tight_layout()
         plt.show()
+
+
+
+
 
 
 
