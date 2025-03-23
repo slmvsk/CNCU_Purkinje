@@ -1941,7 +1941,6 @@ class TrySet:
         ("soma", 0.5, "ik_mslo"),
         ("soma", 0.5, "ik_SK2"),
         ("soma", 0.5, "ica_newCaP"),
-        ("soma", 0.5, "iCa_CaT3_1"),
         #("axon", 0.0, "ik_mslo"),
         #("axon", 0.0, "ik_SK2"),
         #("axon", 0.0, "ica_newCaP"),
