@@ -481,6 +481,7 @@ def plot_ca(runner, variables=None):
         plt.show()
 
 
+
 if __name__ == "__main__":
     analyze_morphology("human/original", adjust_soma=True, colorize=True)
     #analyze_morphology("macaque/macaque_original", adjust_soma=True, colorize=True)
@@ -520,7 +521,7 @@ if __name__ == "__main__":
         for runner in Runner.product(*specs):
             runners.append(runner)
             spec = runner.spec
-            plot_recording_variations(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner)
+            #plot_recording_variations(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner)
             #plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # uncomment
             plot_ca(runner)
             if EXPORT_RESULT:
