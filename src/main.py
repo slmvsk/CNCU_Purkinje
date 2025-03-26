@@ -489,7 +489,7 @@ def plot_ca(runner, variables=None, output_dir="exported_traces"):
             print(f"✅ Saved: {csv_path}")
 
         # Plot display
-        plt.title(f"{var} traces across locations")
+        plt.title(f"{var} traces across locations")   #ADD INJECTION CURRENT and .... 
         plt.xlabel("Time [ms]")
         plt.ylabel(var)
         #plt.yscale("log")  # Add this before plt.legend() to use logarithmic scale
