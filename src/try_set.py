@@ -1959,18 +1959,22 @@ class TrySet:
     # selected points save 
     # 1 plot where compared ca conc in all locations 
     
-    _try_ca_recordings_trial = [
+    _try_ca_recordings_zang = [
         ("soma", 0.5, "cai"),
         ("soma", 0.5, "ica"),
         ("soma", 0.5, "v"),
+        ("axon", 0.0, "ica"),
+        ("axon", 0.0, "cai"),
+        ("axon", 0.0, "v"),
+        
     ]
     
     
     def try_ca_recordings():
         #print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
         #from runner import Recording
-        #base = TrySet.human_original_base_ca.lift()(
-        base = TrySet.human_original_nice.lift()(
+        base = TrySet.zang2021_ca.lift()(
+        #base = TrySet.human_original_nice.lift()(
             recordings=[TrySet._try_ca_recordings], # I removed [] around TrySet._try_ca_recordings
             #recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
         )

@@ -443,18 +443,22 @@ def stats(tries):
 
 import matplotlib.pyplot as plt
 from collections import defaultdict
+import pandas as pd
+import os
 
-def plot_ca(runner, variables=None):
+def plot_ca(runner, variables=None, output_dir="exported_traces"):
     """
-    Plot all specified variables across different locations.
-    Each variable gets its own plot, showing traces from all locations where it was recorded.
+    Plot and export traces for each variable across locations.
 
     Args:
-        runner: A Runner instance that has .spec and .get_result_at() available.
-        variables: List of variable names to include in plots. If None, will infer from recordings.
+        runner: Runner object with .spec and .get_result_at().
+        variables: List of variable names to plot and save (e.g., ['v', 'cai', 'ica']).
+        output_dir: Directory to save CSV files to.
     """
     spec = runner.spec
     recordings = spec.recordings
+
+    os.makedirs(output_dir, exist_ok=True)
 
     # Group recordings by variable (e.g., 'v', 'cai', 'ica', etc.)
     variable_map = defaultdict(list)
@@ -466,28 +470,39 @@ def plot_ca(runner, variables=None):
 
     for var, entries in variable_map.items():
         plt.figure(figsize=(10, 6))
+        df = None  # Initialize DataFrame for this variable
+
         for i, rec in entries:
             ts, vs = runner.get_result_at(i)
             label = f"{rec.section}({rec.position})"
             plt.plot(ts, vs, label=label)
 
+            # Add to DataFrame for CSV
+            if df is None:
+                df = pd.DataFrame({"time_ms": ts})
+            df[label] = vs
+
+        # Save CSV
+        if df is not None:
+            csv_path = os.path.join(output_dir, f"{var}_traces.csv")
+            df.to_csv(csv_path, index=False)
+            print(f"✅ Saved: {csv_path}")
+
+        # Plot display
         plt.title(f"{var} traces across locations")
         plt.xlabel("Time [ms]")
         plt.ylabel(var)
+        plt.yscale("log")  # Add this before plt.legend() to use logarithmic scale
         plt.legend()
         plt.tight_layout()
         plt.show()
 
 
 
-
-
-
-
 if __name__ == "__main__":
-    analyze_morphology("human/original", adjust_soma=True, colorize=True)
+    #analyze_morphology("human/original", adjust_soma=True, colorize=True)
     #analyze_morphology("macaque/macaque_original", adjust_soma=True, colorize=True)
-    #analyze_morphology("zang2021/fig3", colorize=True)
+    analyze_morphology("zang2021/fig3", colorize=True)
     # analyze_morphology("macaque/Axon_withellipse", colorize=True)
     #capture(TrySet.human_original_base)
     #capture(TrySet.human_original_nice)

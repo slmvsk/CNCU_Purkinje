@@ -16,7 +16,7 @@ cell = Cell.load("/Users/tetianasalamovska/Downloads/Akicodes/data/human/origina
 
 
 
-
+#dendA1_01
 
 from neuron import h
 import pandas as pd
