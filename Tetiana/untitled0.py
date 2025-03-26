@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 #from neuron import gui
 from cell import Cell
 
-cell = Cell.load("/Users/tetianasalamovska/Downloads/Akicodes/data/human/original.hoc", gui=False)   
+cell = Cell.load("/Users/tetianasalamovska/Downloads/Akicodes/data/zang2021/fig3.hoc", gui=False)   
 
 
 
@@ -23,12 +23,12 @@ import pandas as pd
 from cell import Cell
 
 # Load and classify the cell
-cell = Cell.load("../data/human/original.hoc")
+cell = Cell.load("/Users/tetianasalamovska/Downloads/Akicodes/data/zang2021/fig3.hoc")
 cell.classify()
 
 # Gather all dendritic sections
 all_dends = []
-for group in ["dend", "dend_5", "dend_6"]:
+for group in "dendA1":
     sec_list = getattr(h, group, None)
     if sec_list:
         for i in range(len(sec_list)):
