@@ -492,7 +492,7 @@ def plot_ca(runner, variables=None, output_dir="exported_traces"):
         plt.title(f"{var} traces across locations")
         plt.xlabel("Time [ms]")
         plt.ylabel(var)
-        plt.yscale("log")  # Add this before plt.legend() to use logarithmic scale
+        #plt.yscale("log")  # Add this before plt.legend() to use logarithmic scale
         plt.legend()
         plt.tight_layout()
         plt.show()
@@ -500,9 +500,9 @@ def plot_ca(runner, variables=None, output_dir="exported_traces"):
 
 
 if __name__ == "__main__":
-    #analyze_morphology("human/original", adjust_soma=True, colorize=True)
+    analyze_morphology("human/original", adjust_soma=True, colorize=True)
     #analyze_morphology("macaque/macaque_original", adjust_soma=True, colorize=True)
-    analyze_morphology("zang2021/fig3", colorize=True)
+    #analyze_morphology("zang2021/fig3", colorize=True)
     # analyze_morphology("macaque/Axon_withellipse", colorize=True)
     #capture(TrySet.human_original_base)
     #capture(TrySet.human_original_nice)
