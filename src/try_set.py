@@ -1972,6 +1972,9 @@ class TrySet:
         ("soma", 0.5, "ik_mslo"),
         ("soma", 0.5, "ica_newCaP"),
         ("soma", 0.5, "ik_SK2"),
+        ("axon", 0.5, "ik_mslo"),
+        ("axon", 0.5, "ica_newCaP"),
+        ("axon", 0.5, "ik_SK2"),
 
     ]
     
@@ -1979,9 +1982,9 @@ class TrySet:
     def try_ca_recordings():
         #print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
         #from runner import Recording
-        #base = TrySet.zang2021_ca.lift()(
-        base = TrySet.human_original_nice.lift()(
-            recordings=[TrySet._try_ca_recordings], # I removed [] around TrySet._try_ca_recordings
+        base = TrySet.zang2021_ca.lift()(
+        #base = TrySet.human_original_nice.lift()(
+            recordings=[TrySet._try_ca_recordings_zang], # I removed [] around TrySet._try_ca_recordings
             #recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
         )
         #print(f"DEBUG: Base recordings AFTER assignment -> {base.recordings}")
@@ -2021,7 +2024,7 @@ TrySet.zang2021_ca = Spec(
     morphology="zang2021/fig3", 
     adjust_soma=True,
     dt=0.01,
-    tstop=150, 
+    tstop=300, 
 )  
 
 
