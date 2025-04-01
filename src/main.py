@@ -20,13 +20,13 @@ logger.verbose()
 
 OUTPUT_DIR = "tmp/output"
 
-PLOT_FINE_TIME = False
-PLOT_FINE_VALUE = False
-PLOT_PERIPHERAL = False
+PLOT_FINE_TIME = True
+PLOT_FINE_VALUE = True
+PLOT_PERIPHERAL = True
 PLOT_CURRENT = True
 PLOT_CURRENT_SUM = True
-PLOT_FREQ = False
-EXPORT_RESULT = False
+PLOT_FREQ = True
+EXPORT_RESULT = True
 EXPORT_GEOM = False #was True
 
 
@@ -470,7 +470,7 @@ def plot_ca(runner, variables=None, output_dir="exported_traces"):
 
     for var, entries in variable_map.items():
         plt.figure(figsize=(10, 6))
-        df = None  # Initialize DataFrame for this variable
+        #df = None  # Initialize DataFrame for this variable
 
         for i, rec in entries:
             ts, vs = runner.get_result_at(i)
@@ -478,15 +478,15 @@ def plot_ca(runner, variables=None, output_dir="exported_traces"):
             plt.plot(ts, vs, label=label)
 
             # Add to DataFrame for CSV
-            if df is None:
-                df = pd.DataFrame({"time_ms": ts})
-            df[label] = vs
+            #if df is None:
+                #df = pd.DataFrame({"time_ms": ts})
+            #df[label] = vs
 
         # Save CSV
-        if df is not None:
-            csv_path = os.path.join(output_dir, f"{var}_traces.csv")
-            df.to_csv(csv_path, index=False)
-            print(f"✅ Saved: {csv_path}")
+        #if df is not None:
+            #csv_path = os.path.join(output_dir, f"{var}_traces.csv")
+            #df.to_csv(csv_path, index=False)
+            #print(f"✅ Saved: {csv_path}")
 
         # Plot display
         plt.title(f"{var} traces across locations")   #ADD INJECTION CURRENT and .... 
@@ -500,9 +500,9 @@ def plot_ca(runner, variables=None, output_dir="exported_traces"):
 
 
 if __name__ == "__main__":
-    analyze_morphology("human/original", adjust_soma=True, colorize=True)
+    #analyze_morphology("human/original", adjust_soma=True, colorize=True)
     #analyze_morphology("macaque/macaque_original", adjust_soma=True, colorize=True)
-    #analyze_morphology("zang2021/fig3", colorize=True)
+    analyze_morphology("zang2021/fig3", colorize=True)
     # analyze_morphology("macaque/Axon_withellipse", colorize=True)
     #capture(TrySet.human_original_base)
     #capture(TrySet.human_original_nice)
@@ -538,8 +538,7 @@ if __name__ == "__main__":
         for runner in Runner.product(*specs):
             runners.append(runner)
             spec = runner.spec
-            #plot_recording_variations(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner)
-            #plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # uncomment
+            plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # uncomment
             plot_ca(runner)
             if EXPORT_RESULT:
                 export_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
