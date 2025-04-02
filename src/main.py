@@ -1,7 +1,7 @@
 import os
 import sys
 import itertools as it
-sys.path.append('/Users/tetianasalamovska/Downloads/Akicodes/src') 
+#sys.path.append('/Users/tetianasalamovska/Downloads/Akicodes') 
 from prelude import logger, Store, uniq
 from runner import Runner, Spec, Injection, Recording
 from try_set import TrySet
