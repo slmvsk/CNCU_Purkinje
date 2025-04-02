@@ -539,7 +539,7 @@ if __name__ == "__main__":
             runners.append(runner)
             spec = runner.spec
             plot_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm) # uncomment
-            plot_ca(runner)
+            #plot_ca(runner)
             if EXPORT_RESULT:
                 export_result(f"{OUTPUT_DIR}/{spec.morphology}/{k}", runner, pm)
             if PLOT_FREQ:
