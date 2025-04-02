@@ -70,7 +70,7 @@ PARAMETER {
   	kpmp2    = 1.75e1   (/ms)
   	kpmp3    = 7.255e1  (/ms)
   : to eliminate pump, set TotalPump to 0 in hoc
-	TotalPump = 1e-18 :weaker calcium extrusion 
+	TotalPump = 1e-20 :weaker calcium extrusion 
 	
 	beta  = 1(1)           :introducing beta to take care of other ER mechanisms(SERCA and leak channel density)
     vmax =0.1
