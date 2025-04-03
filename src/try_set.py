@@ -1978,13 +1978,31 @@ class TrySet:
 
     ]
     
+    _try_ca_recordings_test = [
+        ("soma", 0.5, "cai"),
+        ("soma", 0.5, "ica"),
+        ("soma", 0.5, "v"),
+        ("axon", 0.5, "ica"),
+        ("axon", 0.5, "cai"),
+        ("axon", 0.5, "v"),
+        ("trunk_sections[0]", 0.0, "ica")
+        ("trunk_sections[0]", 0.0, "cai")
+        ("trunk_sections[0]", 0.0, "v")
+        #("soma", 0.5, "ik_mslo"),
+        #("soma", 0.5, "ica_newCaP"),
+        #("soma", 0.5, "ik_SK2"),
+        #("axon", 0.5, "ik_mslo"),
+        #("axon", 0.5, "ica_newCaP"),
+        #("axon", 0.5, "ik_SK2"),
+
+    ]
     
     def try_ca_recordings():
         #print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
         #from runner import Recording
-        base = TrySet.zang2021_ca.lift()(
+        base = TrySet.human_original_nice.lift()(
         #base = TrySet.human_original_nice.lift()(
-            recordings=[TrySet._try_ca_recordings_zang], # I removed [] around TrySet._try_ca_recordings
+            recordings=[TrySet._try_ca_recordings_test], # I removed [] around TrySet._try_ca_recordings
             #recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
         )
         #print(f"DEBUG: Base recordings AFTER assignment -> {base.recordings}")
@@ -2010,7 +2028,7 @@ TrySet.human_original_base = Spec(
     morphology="human/original",
     adjust_soma=True,
     dt=0.01,
-    tstop=400, # CHANGE TO 300 
+    tstop=300, # CHANGE TO 300 
 )
 
 TrySet.human_original_base_ca = Spec( # i added this 
