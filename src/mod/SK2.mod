@@ -32,7 +32,8 @@ UNITS {
 PARAMETER {
 	celsius  (degC)
 	cai (mM)
-	gkbar = 0.038 (mho/cm2)
+	: #gkbar = 0.038 (mho/cm2) 
+        gkbar = 0.018 (mho/cm2) 
 	Q10 = 2.7 (1)
 	diff = 1 (1) : diffusion factor
     scal = 1
