@@ -13,7 +13,7 @@ from cell import Cell
 
 cell = Cell.load("/Users/tetianasalamovska/Downloads/Akicodes/data/zang2021/fig3.hoc", gui=False)   
 
-
+print(h.soma.psection()['density_mechs'].keys())
 
 
 #dendA1_01
