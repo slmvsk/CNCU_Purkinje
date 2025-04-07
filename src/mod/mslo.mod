@@ -43,7 +43,7 @@ CONSTANT {
 }
 
 PARAMETER {
-    gbar = 0.01 (S/cm2)
+    gbar = 0.009 (S/cm2)
     
     Qo = 0.73
     Qc = -0.67
