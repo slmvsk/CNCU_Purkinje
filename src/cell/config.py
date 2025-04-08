@@ -154,13 +154,11 @@ class Config:
         sec.gbar_Kv3 = 1.8
         sec.vshift_Kv3 = 4
         sec.insert("newCaP")
-        #sec.pcabar_newCaP = 0.00019
-        sec.pcabar_newCaP = 0
+        sec.pcabar_newCaP = 0.00019
         sec.kt_newCaP = 1
         sec.vshift_newCaP = -5
         sec.insert("mslo")
-        #sec.gbar_mslo = 0.8736
-        sec.gbar_mslo = 0.01
+        sec.gbar_mslo = 0.8736
         sec.insert("abBK")
         sec.gabkbar_abBK = 0.3
         sec.insert("SK2")
