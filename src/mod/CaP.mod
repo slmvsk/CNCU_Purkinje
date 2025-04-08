@@ -48,7 +48,7 @@ PARAMETER {
 	cai (mM)
 	cao (mM)
     vshift =0
-	pcabar = 0 (cm/s)
+	pcabar = 6e-5 (cm/s)
 	monovalConc = 140 (mM)
 	monovalPerm = 0
 	kt=1
