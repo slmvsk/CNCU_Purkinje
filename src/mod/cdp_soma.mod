@@ -74,7 +74,7 @@ PARAMETER {
 	
 	beta  = 1(1)           :introducing beta to take care of other ER mechanisms(SERCA and leak channel density)
     vmax =0.1
-    Kp = 2.7e-3 (mM)	
+    Kp = 2.7e-4 (mM)	
 	
 }
 

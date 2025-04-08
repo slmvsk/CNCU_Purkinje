@@ -43,7 +43,7 @@ PARAMETER {
         v               (mV)
         celsius (degC)
         eca (mV)
-	pcabar  = 2.5e-4 (cm/s)
+	pcabar  = 1.5e-4 (cm/s)
         cai = 1e-4  (mM)           : adjusted for eca=120 mV
 	cao = 2  (mM)
 	
