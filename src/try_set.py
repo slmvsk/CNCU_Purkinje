@@ -1988,9 +1988,9 @@ class TrySet:
         #("trunk_sections[0]", 0.0, "ica")
         #("trunk_sections[0]", 0.0, "cai")
         #("trunk_sections[0]", 0.0, "v")
-        ("soma", 0.5, "ik_mslo"),
-        ("soma", 0.5, "ica_newCaP"),
-        ("soma", 0.5, "ik_SK2"),
+        ("soma", 0.0, "ik_mslo"),
+        ("soma", 0.0, "ica_newCaP"),
+        ("soma", 0.0, "ik_SK2"),
         #("axon", 0.5, "ik_mslo"),
         #("axon", 0.5, "ica_newCaP"),
         #("axon", 0.5, "ik_SK2"),
