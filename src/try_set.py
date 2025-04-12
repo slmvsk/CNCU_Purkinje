@@ -2042,7 +2042,7 @@ TrySet.zang2021_ca = Spec(
     morphology="zang2021/fig3", 
     adjust_soma=True,
     dt=0.01,
-    tstop=300, 
+    tstop=200, 
 )  
 
 
