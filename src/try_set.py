@@ -2000,7 +2000,7 @@ class TrySet:
     def try_ca_recordings():
         #print(f"DEBUG: TrySet._try_ca_recordings BEFORE processing -> {TrySet._try_ca_recordings}")
         #from runner import Recording
-        base = TrySet.human_original_nice.lift()(
+        base = TrySet.zang2021_ca.lift()(
         #base = TrySet.human_original_nice.lift()(
             recordings=[TrySet._try_ca_recordings_test], # I removed [] around TrySet._try_ca_recordings
             #recordings=[Recording(*r) for r in TrySet._try_ca_recordings] # wraping bc it is not working
