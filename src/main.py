@@ -500,9 +500,9 @@ def plot_ca(runner, variables=None, output_dir="exported_traces"):
 
 
 if __name__ == "__main__":
-    #analyze_morphology("human/original", adjust_soma=True, colorize=True)
+    analyze_morphology("human/original", adjust_soma=True, colorize=True)
     #analyze_morphology("macaque/macaque_original", adjust_soma=True, colorize=True)
-    analyze_morphology("zang2021/fig3", colorize=True)
+    #analyze_morphology("zang2021/fig3", colorize=True)
     # analyze_morphology("macaque/Axon_withellipse", colorize=True)
     #capture(TrySet.human_original_base)
     #capture(TrySet.human_original_nice)
