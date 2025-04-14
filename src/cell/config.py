@@ -141,12 +141,6 @@ class Config:
         sec.vshifta_naRsg = 0
         sec.vshiftk_naRsg = 0
         sec.vshifti_naRsg = -5
-        
-        sec.insert("cdp_soma")
-        #sec.Kp = 2.7e-3
-        sec.Kp = 1.7e-3
-        #sec.TotalPump = 1e-15
-        sec.TotalPump = 0
 
         sec.insert("nap")
         sec.gbar_nap = 0.00014
@@ -155,6 +149,8 @@ class Config:
         sec.ghbar_hpkj = 0.000108
 
         sec.insert("cdp20N_FD2")
+        sec.TotalPump = 0
+        sec.Kp = 1.7e-3
 
         sec.insert("Kv3")
         sec.gbar_Kv3 = 1.8
