@@ -149,7 +149,6 @@ class Config:
         sec.ghbar_hpkj = 0.000108
 
         sec.insert("cdp20N_FD2")
-        sec.TotalPump = 0
         sec.Kp = 1.7e-3
 
         sec.insert("Kv3")
