@@ -3,9 +3,9 @@
 NEURON {
   SUFFIX cdp20N_FD2
   USEION ca READ cao, cai, ica WRITE cai
-  RANGE ica_pmp
+  RANGE ica_pmp, TotalPump, CBnull, Kp
 :RANGE pump_0
-GLOBAL vrat, TotalPump
+GLOBAL vrat
     : vrat must be GLOBAL--see INITIAL block
     : however TotalBuffer and TotalPump may be RANGE
 :    THREADSAFE

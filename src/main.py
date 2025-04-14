@@ -498,7 +498,6 @@ def plot_ca(runner, variables=None, output_dir="exported_traces"):
         plt.show()
 
 
-
 if __name__ == "__main__":
     analyze_morphology("human/original", adjust_soma=True, colorize=True)
     #analyze_morphology("macaque/macaque_original", adjust_soma=True, colorize=True)
