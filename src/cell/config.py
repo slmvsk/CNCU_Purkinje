@@ -143,8 +143,10 @@ class Config:
         sec.vshifti_naRsg = -5
         
         sec.insert("cdp_soma")
-        sec.Kp = 2.7e-3
-        sec.TotalPump = 1e-15
+        #sec.Kp = 2.7e-3
+        sec.Kp = 1.7e-3
+        #sec.TotalPump = 1e-15
+        sec.TotalPump = 0
 
         sec.insert("nap")
         sec.gbar_nap = 0.00014
