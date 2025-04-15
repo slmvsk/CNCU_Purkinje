@@ -2009,7 +2009,7 @@ class TrySet:
         return [
             base(
                 injections=[
-                    TrySet._injection_soma(amp) for amp in [-0.2, 0.0, 0.2]
+                    TrySet._injection_soma(amp) for amp in [-0.4, -0.2, 0.0, 0.2]
                 ]
              )
           ]
