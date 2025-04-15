@@ -150,8 +150,8 @@ class Config:
 
         sec.insert("cdp20N_FD2")
         cdp = sec(0.5).cdp20N_FD2
-        cdp.TotalPump = 1e-14
-        cdp.Kp = 1.7e-3
+        cdp.TotalPump = 1e-10
+        cdp.Kp = 1.7e-2
         cdp.CBnull = 0.16
         cdp.PVnull = 0.08
         
