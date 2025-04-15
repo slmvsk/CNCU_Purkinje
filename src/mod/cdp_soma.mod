@@ -3,9 +3,9 @@
 NEURON {
   SUFFIX cdp20N_FD2
   USEION ca READ cao, cai, ica WRITE cai
-  RANGE ica_pmp, TotalPump, CBnull, Kp
+  RANGE ica_pmp
 :RANGE pump_0
-GLOBAL vrat
+GLOBAL vrat, TotalPump
     : vrat must be GLOBAL--see INITIAL block
     : however TotalBuffer and TotalPump may be RANGE
 :    THREADSAFE
@@ -50,8 +50,8 @@ PARAMETER {
 
 :       values for Calbindin (2 high and 2 low affinity binding sites)
 
-:        CBnull=	0             (mM)
- 		CBnull=	0       
+:        CBnull=	.16             (mM)
+ 		CBnull=	.08       
         nf1   =43.5           (/ms mM)
         nf2   =3.58e-2        (/ms)
         ns1   =5.5            (/ms mM)
@@ -70,11 +70,11 @@ PARAMETER {
   	kpmp2    = 1.75e1   (/ms)
   	kpmp3    = 7.255e1  (/ms)
   : to eliminate pump, set TotalPump to 0 in hoc
-	TotalPump = 0	
+	TotalPump = 1e-15	
 	
 	beta  = 1(1)           :introducing beta to take care of other ER mechanisms(SERCA and leak channel density)
     vmax =0.1
-    Kp = 1.7e-3 (mM)	
+    Kp = 2.7e-3 (mM)	
 	
 }
 
