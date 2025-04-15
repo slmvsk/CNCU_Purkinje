@@ -5,7 +5,6 @@ Created on Thu Jan 30 17:20:12 2025
 
 @author: tetianasalamovska
 """
-config.configure(soma_pcabar_newCaP=0.0)
 
 
 from neuron import h

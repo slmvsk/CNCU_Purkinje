@@ -50,8 +50,8 @@ PARAMETER {
 
 :       values for Calbindin (2 high and 2 low affinity binding sites)
 
-:        CBnull=	.16             (mM)
- 		CBnull=	.08       
+:        CBnull=	0             (mM)
+ 		CBnull=	0       
         nf1   =43.5           (/ms mM)
         nf2   =3.58e-2        (/ms)
         ns1   =5.5            (/ms mM)
