@@ -1980,14 +1980,14 @@ class TrySet:
     
     _try_ca_recordings_test = [
         ("soma", 0.5, "cai"),
-        ("soma", 0.5, "ica"),
+        #("soma", 0.5, "ica"),
         ("soma", 0.5, "v"),
         #("axon", 0.5, "ica"),
-        #("axon", 0.5, "cai"),
-        #("axon", 0.5, "v"),
+        ("axon", 0.5, "cai"),
+        ("axon", 0.5, "v"),
         #("trunk_sections[0]", 0.0, "ica")
-        #("trunk_sections[0]", 0.0, "cai")
-        #("trunk_sections[0]", 0.0, "v")
+        ("trunk_sections[0]", 0.0, "cai")
+        ("trunk_sections[0]", 0.0, "v")
         ("soma", 0.0, "ik_mslo"),
         ("soma", 0.0, "ica_newCaP"),
         ("soma", 0.0, "ik_SK2"),
@@ -2030,13 +2030,6 @@ TrySet.human_original_base = Spec(
     dt=0.01,
     tstop=300, # CHANGE TO 300 
 )
-
-TrySet.human_original_base_ca = Spec( # i added this 
-    morphology="human/original", 
-    adjust_soma=True,
-    dt=0.01,
-    tstop=300, # Run for 1 sec
-)  # run for less time + save vectors not plots, plots only important what caused what 
 
 TrySet.zang2021_ca = Spec( 
     morphology="zang2021/fig3", 
