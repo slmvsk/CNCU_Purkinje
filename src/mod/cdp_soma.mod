@@ -51,7 +51,7 @@ PARAMETER {
 :       values for Calbindin (2 high and 2 low affinity binding sites)
 
 :        CBnull=	.16             (mM)
- 		CBnull=	.08       
+ 		CBnull=	.16       
         nf1   =43.5           (/ms mM)
         nf2   =3.58e-2        (/ms)
         ns1   =5.5            (/ms mM)
@@ -70,7 +70,7 @@ PARAMETER {
   	kpmp2    = 1.75e1   (/ms)
   	kpmp3    = 7.255e1  (/ms)
   : to eliminate pump, set TotalPump to 0 in hoc
-	TotalPump = 1e-10	
+	TotalPump = 1e-15	
 	
 	beta  = 1(1)           :introducing beta to take care of other ER mechanisms(SERCA and leak channel density)
     vmax =0.1
