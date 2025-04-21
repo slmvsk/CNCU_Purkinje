@@ -43,7 +43,7 @@ def analyze_morphology(
     #print(f"🔍 Debug: Trying to load morphology from {morphology_file}")
     #cell = Cell.load(morphology_file, gui=True)
        
-    cell = Cell.load(f"/Users/tetianasalamovska/Downloads/Akicodes/data/{morphology}.hoc", gui=True)   
+    cell = Cell.load(f"/Users/tetianasalamovska/Downloads/CNCU_Purkinje/data/{morphology}.hoc", gui=True)   
     #cell = Cell.load(f"../data/{morphology}.hoc", gui=True)  # Move up a directory
     cell.test_continuity(0.1)
 
