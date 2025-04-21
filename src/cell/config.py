@@ -152,9 +152,10 @@ class Config:
         cdp = sec(0.5).cdp20N_FD2
         cdp.TotalPump = 1e-15 # 1
         cdp.Kp = 2.7e-3 # no effect so don't change 
-        #cdp.CBnull = 0.08 
-        cdp.CBnull = 0.32 
-        cdp.PVnull = 0.04
+        #cdp.CBnull = 0.32 
+        cdp.CBnull = 0.08 
+        #cdp.PVnull = 0.04
+        cdp.PVnull = 0.24
         
 
         sec.insert("Kv3")
