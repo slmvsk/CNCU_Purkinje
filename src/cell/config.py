@@ -153,7 +153,7 @@ class Config:
         cdp.TotalPump = 1e-15 # 1
         cdp.Kp = 2.7e-3 # no effect so don't change 
         #cdp.CBnull = 0.08 
-        cdp.CBnull = 0.16 # 2
+        cdp.CBnull = 0.24 
         cdp.PVnull = 0.04
         
 
