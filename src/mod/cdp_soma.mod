@@ -51,7 +51,7 @@ PARAMETER {
 :       values for Calbindin (2 high and 2 low affinity binding sites)
 
 :        CBnull=	.16             (mM)
- 		CBnull=	.28       
+ 		CBnull=	.18       
         nf1   =43.5           (/ms mM)
         nf2   =3.58e-2        (/ms)
         ns1   =5.5            (/ms mM)
@@ -60,7 +60,7 @@ PARAMETER {
 :       values for Parvalbumin
 
 :        PVnull  = .08           (mM)
-         PVnull  = .08           (mM)
+         PVnull  = .04           (mM)
         m1    = 1.07e2        (/ms mM)
         m2    = 9.5e-4                (/ms)
         p1    = 0.8           (/ms mM)
@@ -73,8 +73,8 @@ PARAMETER {
 	TotalPump = 1e-9	
 	
 	beta  = 1(1)           :introducing beta to take care of other ER mechanisms(SERCA and leak channel density)
-    vmax =0.2
-    Kp = 1.7e-3 (mM)	
+    vmax =0.1
+    Kp = 3.5e-3 (mM)	
 	
 }
 
