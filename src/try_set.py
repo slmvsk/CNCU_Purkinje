@@ -1983,11 +1983,11 @@ class TrySet:
         #("soma", 0.5, "ica"),
         ("soma", 0.5, "v"),
         #("axon", 0.5, "ica"),
-        ("axon", 0.5, "cai"),
-        ("axon", 0.5, "v"),
+        #("axon", 0.5, "cai"),
+        #("axon", 0.5, "v"),
         #("trunk_sections[0]", 0.0, "ica")
         #("trunk_sections[0]", 0.0, "cai")
-       # ("trunk_sections[0]", 0.0, "v")
+        #("trunk_sections[0]", 0.0, "v")
         ("soma", 0.0, "ik_mslo"),
         ("soma", 0.0, "ica_newCaP"),
         ("soma", 0.0, "ik_SK2"),

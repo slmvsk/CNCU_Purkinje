@@ -25,9 +25,9 @@ PLOT_FINE_VALUE = True
 PLOT_PERIPHERAL = True
 PLOT_CURRENT = True
 PLOT_CURRENT_SUM = True
-PLOT_FREQ = False
-EXPORT_RESULT = False
-EXPORT_GEOM = False #was True
+PLOT_FREQ = True
+EXPORT_RESULT = True
+EXPORT_GEOM = True #was True
 
 
 def analyze_morphology(
