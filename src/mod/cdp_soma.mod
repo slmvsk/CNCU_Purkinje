@@ -51,7 +51,7 @@ PARAMETER {
 :       values for Calbindin (2 high and 2 low affinity binding sites)
 
 :        CBnull=	.16             (mM)
- 		CBnull=	.28       
+ 		CBnull=	.32       
         nf1   =43.5           (/ms mM)
         nf2   =3.58e-2        (/ms)
         ns1   =5.5            (/ms mM)
@@ -70,7 +70,7 @@ PARAMETER {
   	kpmp2    = 1.75e1   (/ms)
   	kpmp3    = 7.255e1  (/ms)
   : to eliminate pump, set TotalPump to 0 in hoc
-	TotalPump = 1e-9	
+	TotalPump = 1e-10	
 	
 	beta  = 1(1)           :introducing beta to take care of other ER mechanisms(SERCA and leak channel density)
     vmax =0.1
@@ -78,9 +78,9 @@ PARAMETER {
 
 : introducing SERCA and ER leak 
 
-	V_SERCA = 0.05 (mM/ms)     : max rate of SERCA pump
+	V_SERCA = 0.01 (mM/ms)     : max rate of SERCA pump
         K_SERCA = 0.3e-3 (mM)      : Ca concentration at half-maximal pumping
-        g_leak = 1e-4 (1/ms)       : leak rate from ER to cytosol (not included for now!)
+      : g_leak = 1e-4 (1/ms)       : leak rate from ER to cytosol (not included for now!)
 	vmax_serca =0.1
     	Kp_serca = 3.5e-3 (mM)		
 }
@@ -219,6 +219,8 @@ KINETIC state {
 	: ica is Ca efflux
 	~ ca[0] << (-ica*PI*diam/(2*FARADAY))
 
+	: SERCA MECAHNISMS
+
         FROM i=0 TO Nannuli-1 {
      ~ ca[i] << (-beta * vrat[i] * vmax_serca * ca[i]^2 / (Kp_serca^2 + ca[i]^2))  : Hill-type SERCA pump
    }
@@ -301,6 +303,6 @@ FUNCTION ssPVmg( kdc(), kdm()) (mM) {
   :v_SERCA = V_SERCA * c^2 / (K_SERCA^2 + c^2)
 :}
 
-FUNCTION J_leak(i) (mM/ms) {
-  J_leak = g_leak * (0.3e-3 - ca[i])
-}
+:FUNCTION J_leak(i) (mM/ms) {
+ : J_leak = g_leak * (0.3e-3 - ca[i])
+:}
