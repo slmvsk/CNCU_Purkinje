@@ -2028,7 +2028,7 @@ TrySet.human_original_base = Spec(
     morphology="human/original",
     adjust_soma=True,
     dt=0.01,
-    tstop=300, # CHANGE TO 300 
+    tstop=600, # CHANGE TO 300 
 )
 
 TrySet.zang2021_ca = Spec( 

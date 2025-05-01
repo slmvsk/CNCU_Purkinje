@@ -81,7 +81,7 @@ PARAMETER {
 	V_SERCA = 0.01 (mM/ms)     : max rate of SERCA pump
         K_SERCA = 0.3e-3 (mM)      : Ca concentration at half-maximal pumping
       : g_leak = 1e-4 (1/ms)       : leak rate from ER to cytosol (not included for now!)
-	vmax_serca =0.1
+	vmax_serca =0.01
     	Kp_serca = 3.5e-3 (mM)		
 }
 
@@ -221,8 +221,13 @@ KINETIC state {
 
 	: SERCA MECAHNISMS
 
-        FROM i=0 TO Nannuli-1 {
-     ~ ca[i] << (-beta * vrat[i] * vmax_serca * ca[i]^2 / (Kp_serca^2 + ca[i]^2))  : Hill-type SERCA pump
+        : FROM i=0 TO Nannuli-1 {
+   :  ~ ca[i] << (-beta * vrat[i] * vmax_serca * ca[i]^2 / (Kp_serca^2 + ca[i]^2))  : Hill-type 
+: SERCA pump
+  : }
+
+	FROM i=0 TO Nannuli-1 {
+     ~ ca[i] << (-beta*vmax*vrat[i]*ca[i] / (ca[i] + kpmp2/kpmp1))
    }
 
 	:RADIAL DIFFUSION OF ca, mg and mobile buffers

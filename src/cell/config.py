@@ -154,9 +154,9 @@ class Config:
         cdp.Kp = 3.5e-3 # no effect so don't change, try 1e-3 
         cdp.CBnull = 0.32 
         #cdp.CBnull = 0.08 
-        cdp.PVnull = 0.04 # no effect 
-        cdp.V_SERCA = 0.01
-        cdp.K_SERCA = 0.3e-3
+        #cdp.PVnull = 0.04 # no effect 
+        #cdp.V_SERCA = 0.01
+        #cdp.K_SERCA = 0.3e-3
         
 
         sec.insert("Kv3")
